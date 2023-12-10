@@ -13,7 +13,7 @@ GROUP BY b.id;
 #widok pokoju
 CREATE VIEW RoomInfo AS
 SELECT
-        r.id, 
+        r.id AS RoomID, 
         r.Number, 
         r.Type, 
         r.BedsNumber, 
