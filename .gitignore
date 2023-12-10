@@ -1,2 +1,3 @@
 # Ignoruj pliki o nazwie zaczynającej się od BD.vpp.bak
 BD.vpp.bak*
+desktop.ini
