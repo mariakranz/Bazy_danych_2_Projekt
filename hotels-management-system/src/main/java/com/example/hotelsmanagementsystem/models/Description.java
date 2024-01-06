@@ -3,12 +3,15 @@ package com.example.hotelsmanagementsystem.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "descriptions")
+@Table(name = "descriptions", uniqueConstraints = {@UniqueConstraint(columnNames = "Description", name = "Description_UNIQUE")})
 public class Description {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private int id;
 
+    @Column(name = "Description", nullable = false, length = 255, unique = true)
     private String description;
 
     public Description(){
@@ -19,12 +22,12 @@ public class Description {
         this.description = description;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
-    public Long getId() {
-        return id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {

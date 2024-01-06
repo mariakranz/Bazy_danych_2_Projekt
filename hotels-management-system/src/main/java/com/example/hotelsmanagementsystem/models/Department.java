@@ -2,38 +2,53 @@ package com.example.hotelsmanagementsystem.models;
 
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
-//@NamedStoredProcedureQuery(
-//        name = "GetDepartmentName",
-//        procedureName = "GetDepartmentName",
-//        resultClasses = Department.class,
-//        parameters = {}
-//)
-@Table(name = "departments")
+@Table(name = "departments",
+        uniqueConstraints = {@UniqueConstraint(columnNames = "Name", name = "Name_UNIQUE")},
+        indexes = {@Index(name = "ManagerID_idx", columnList = "ManagerID")})
 public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private int id;
 
-    @Column(name = "Name")
+    @Column(name = "Name", nullable = false, length = 255)
     private String name;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ManagerID")
-    private Long managerId;
+//    @Column(name = "ManagerID", nullable = false, insertable=false, updatable=false)
+//    //@Column(insertable=false, updatable=false)
+//    private int managerID;
 
-    public Department(){
+    @ManyToOne
+    //@JoinColumn(name = "ManagerID", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "ManagerID", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "ManagerIDfk", foreignKeyDefinition = "FOREIGN KEY (ManagerID) REFERENCES employees(id) ON DELETE RESTRICT ON UPDATE NO ACTION"))
+    //@JoinColumn(name = "ManagerID", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "ManagerIDfk", foreignKeyDefinition = "FOREIGN KEY (ManagerID) REFERENCES employees(id)"))
+    private Employee manager;
 
+    // Getters and setters
+
+    public int getId() {
+        return id;
     }
 
-    public Department(String name, Long managerId){
+    public void setId(int id) {
         this.id = id;
-        this.name = name;
-        this.managerId = managerId;
     }
-    // Gettery i settery
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Employee getManager() {
+        return manager;
+    }
+
+    public void setManager(Employee manager) {
+        this.manager = manager;
+    }
 }
