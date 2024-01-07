@@ -5,36 +5,40 @@
 
 </head>
 <body>
-<header th:replace="fragments/fragments :: header"></header>
-<nav th:replace="fragments/fragments :: nav"></nav>
+<div  th:replace="fragments/fragments :: fragmentsGroup"></div>
+
 <section class="section">
-    <article>
+    <header style="text-align: center">
+        <h1>Pokoje</h1>
+    </header>
+    <!--<article th:each="room : ${rooms}">
+            <header>
+                <h1 th:text="${room.type} ' - ' ${room.City}"></h1>
+            </header>
+        <section>
+            <p>
+                <b>Typ pokoju:</b> <span th:text="${room.type}"></span><br />
+                <b>Liczba łóżek:</b> <span th:text="${room.bedsNumber}"></span><br />
+                <b>Opis pokoju:</b> <span th:text="${#strings.substring(room.Roomdescription, 0, 50)}"></span>...
+
+    </p>
+</section>
+</article>
+
+
+
+    -->
+    <article th:each="iteration : ${#numbers.sequence(1, 10)}">
         <header>
-            <h1>Opis</h1>
+            <h2 th:text="'typ - city'"></h2>
         </header>
         <section>
             <p>
-                Witaj w naszym świecie, gdzie luksus spotyka się z bezkompromisową obsługą, a każdy pobyt staje się wyjątkowym przeżyciem. Nasza sieć hotelowa pragnie dostarczyć niezapomniane chwile podróżnym na całym świecie, łącząc elegancję z różnorodnością lokalizacji.
+                <b>Typ pokoju:</b> <span th:text="type"></span><br />
+                <b>Liczba łóżek:</b> <span th:text="bedsnumber"></span><br />
+                <b>Opis pokoju:</b> <span th:text="descriptiondescriptiondescriptiondescriptiondescriptiondescription"></span>...
                 <br /><br />
-                <b>1. Różnorodność Lokalizacji:</b><br />
-                Od malowniczych kurortów po pulsujące centra miejskie – nasza sieć hotelowa oferuje różnorodność lokalizacji, zaspokajając najbardziej wymagające gusta podróżnych. Każdy hotel to oaza spokoju, niezależnie od miejsca na mapie.
-                <br /><br />
-                <b>2. Standardy Jakości Bez Kompromisów:</b><br />
-                Nasze hotele są znane z nieustępliwego standardu obsługi i dbałości o detale. Każdy pokój jest starannie zaprojektowany, by oferować nie tylko komfort, ale również estetykę, tworząc unikalne wnętrza, które przyciągają uwagę.
-                <br /><br />
-                <b>3. Program Lojalnościowy dla Naszych Gości:</b><br />
-                Tworzymy więzi z naszymi gośćmi poprzez program lojalnościowy, w którym zbieranie punktów podczas każdego pobytu przekłada się na wyjątkowe przywileje. Naszym celem jest nagradzanie lojalności i sprawianie, że każdy powrót jest jeszcze bardziej satysfakcjonujący.
-                <br /><br />
-                <b>4. Innowacyjne Rozwiązania Technologiczne:</b><br />
-                Wprowadzamy nowoczesne technologie, aby ułatwić doświadczenie naszych gości. Od łatwej rezerwacji online po inteligentne systemy kontroli pokoi – chcemy, aby każdy moment spędzony w naszych hotelach był jeszcze bardziej wygodny.
-                <br /><br />
-                <b>5. Zrównoważony Rozwój dla Lepszej Przyszłości:</b><br />
-                Pragniemy być nie tylko liderem w obszarze gościnności, ale także wzorem w dziedzinie zrównoważonego rozwoju. Oszczędzamy energię, redukujemy odpady i angażujemy się w projekty społeczne, aby nasza obecność miała pozytywny wpływ na środowisko i społeczność.
-                <br /><br />
-                <b>6. Indywidualne Podejście do Każdego Gościa:</b><br />
-                Jesteśmy dumni z naszego indywidualnego podejścia do każdego gościa. Nasza obsługa skupia się na detalach, a nasze hotele stają się domem z dala od domu, oferując spersonalizowane doświadczenia, które pozostawiają trwałe wspomnienia.
-                <br /><br />
-                Dołącz do nas w podróży pełnej luksusu, elegancji i serdeczności. Nasza sieć hotelowa to nie tylko miejsce do spania, to miejsce, gdzie podróż staje się wyjątkową historią.
+                <!-- Pozostałe informacje o pokoju -->
             </p>
         </section>
     </article>

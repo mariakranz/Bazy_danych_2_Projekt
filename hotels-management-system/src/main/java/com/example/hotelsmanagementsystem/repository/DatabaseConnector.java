@@ -2,6 +2,8 @@ package com.example.hotelsmanagementsystem.repository;
 
 import com.example.hotelsmanagementsystem.models.Department;
 import com.example.hotelsmanagementsystem.models.Description;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
@@ -119,6 +121,37 @@ public class DatabaseConnector{
 
             tearDown();
             return departments;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public int authenticateUser(String login, String password) {
+        int empId;
+
+        try {
+            if (sessionFactory == null) {
+                setUp();
+            }
+
+            //setUp();
+
+            Session session = sessionFactory.openSession();
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("AuthenticateUser");
+
+            storedProcedure.registerStoredProcedureParameter("p_Login", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_Password", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.OUT);
+
+            storedProcedure.setParameter("p_Login", login);
+            storedProcedure.setParameter("p_Password", password);
+
+            storedProcedure.execute();
+
+            empId = (int) storedProcedure.getOutputParameterValue("p_EmployeeID");
+
+            tearDown();
+            return empId;
 
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:fragment="head">
+    <title th:text="${title}"></title>
     <!-- Required meta tags -->
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
@@ -14,22 +15,63 @@
 
 </head>
 <body>
-    <header id="header" th:fragment="header">
-        <h1 id="title">Sieć hoteli</h1>
-    </header>
+    <div th:fragment="fragmentsGroup" class="sticky">
+        <header id="header" th:fragment="header">
+            <h1 id="title">Sieć hoteli</h1>
+        </header>
 
-    <nav class="navbar navbar-dark bg-dark navbar-expand-lg"  th:fragment="nav">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                <li class="nav-item active"><a  class="nav-link" href="#">Strona głowna</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html">Oferty</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html">Oferty specjalne</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html">Logowanie</a></li>
-            </ul>
+        <nav class="navbar navbar-dark bg-dark navbar-expand-lg "  th:fragment="nav">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item" th:if="${title != 'Strona główna'}">
+                        <a  class="nav-link" th:href="@{/}">Strona głowna</a>
+                    </li>
+                    <li class="nav-item active" th:if="${title == 'Strona główna'}">
+                        <a  class="nav-link">Strona głowna</a>
+                    </li>
+                    <li class="nav-item" th:if="${title != 'Oferty'}">
+                        <a class="nav-link" th:href="@{/offers}">Oferty</a>
+                    </li>
+                    <li class="nav-item active" th:if="${title == 'Oferty'}">
+                        <a class="nav-link">Oferty</a>
+                    </li>
+                    <li class="nav-item" th:if="${EmpId == -1}">
+                        <a class="nav-link" th:href="@{/openLoginForm}">Logowanie</a>
+                    </li>
+                    <li class="nav-item" th:if="${EmpId > 0}">
+                        <a class="nav-link" href="index.html">Profil</a>
+                    </li>
+                    <li class="nav-item" th:if="${EmpId > 0}">
+                        <a class="nav-link" href="index.html">Panel zarządzania</a>
+                    </li>
+                    <li class="nav-item ml-auto" th:if="${EmpId > 0}">
+                        <a class="nav-link" th:href="@{/logoutEmp}">Wyloguj</a>
+                    </li>
+                </ul>
 
+            </div>
+
+        </nav>
+
+        <div th:if="${showLoginForm}" class="login-container" th:fragment="loginForm">
+            <h2>Logowanie</h2>
+            <form class="login-form" action="#" method="post" th:action="@{/lEmp}">
+                <div class="form-group">
+                    <label for="username">Nazwa użytkownika:</label>
+                    <input type="text" id="username" name="username" th:required="true">
+                </div>
+                <div class="form-group">
+                    <label for="password">Hasło:</label><br />
+                    <input type="password" id="password" name="password" th:required="true">
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Zaloguj się">
+                    <a th:href="@{/closeLoginForm}" class="cancel-button">Anuluj</a>
+                </div>
+            </form>
         </div>
+    </div>
 
-    </nav>
 
 </body>
 </html>

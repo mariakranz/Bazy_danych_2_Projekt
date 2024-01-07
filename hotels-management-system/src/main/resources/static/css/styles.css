@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     width:100%;
+
 }
 
 h1 {
@@ -17,6 +18,11 @@ h1 {
 #title{
     width:100%;
     text-align:center;
+}
+.sticky {
+    background-color: #ffffff;
+    position: sticky;
+    top: 0;
 }
 .horizontal-menu {
     background-color: #333;
@@ -55,4 +61,71 @@ h1 {
     padding: 20px;
     color: #333;
 
+}
+.login-container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #333;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group input[type="submit"] {
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+}
+
+.form-group input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+.cancel-button {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    color: #333;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #ddd;
+    text-decoration: none;
 }

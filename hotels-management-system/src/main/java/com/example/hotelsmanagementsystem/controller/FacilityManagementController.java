@@ -27,10 +27,10 @@ public class FacilityManagementController {
     }
 
     @PostMapping("/descriptions")       //fixme: nie da sie dobic do tego endpointa
-    public HttpStatus addDescription() {
-        return HttpStatus.OK;
-//        dm.addDescriptionToDatabase(description);
-//        return HttpStatus.ACCEPTED;
+    public HttpStatus addDescription(Description description) {
+        //return HttpStatus.OK;
+        dm.addDescriptionToDatabase(description);
+        return HttpStatus.ACCEPTED;
         //return "OK";
     }
 

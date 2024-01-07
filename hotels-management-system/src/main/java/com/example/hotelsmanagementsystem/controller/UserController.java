@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-    @GetMapping
+
     public int getUserById(@PathVariable int id) {
         return 7;
     }
