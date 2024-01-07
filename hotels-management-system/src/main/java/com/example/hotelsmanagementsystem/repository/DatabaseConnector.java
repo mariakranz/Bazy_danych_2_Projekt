@@ -4,6 +4,7 @@ import com.example.hotelsmanagementsystem.models.Department;
 import com.example.hotelsmanagementsystem.models.Description;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
+import org.aspectj.lang.annotation.Before;
 import org.hibernate.Session;
 import org.hibernate.SessionBuilder;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class DatabaseConnector{
     private SessionFactory sessionFactory;
+
 
     protected void setUp() throws Exception {
         // A SessionFactory is set up once for an application!                      //fixme: wykombinowac jak to zrobic
@@ -41,16 +43,23 @@ public class DatabaseConnector{
     }
 
 
-    public void saveDescriptionToDB(Description description){
-        //Description desc = new Description(description);
-
+    public void saveDescriptionToDB(String description){
+        //Description newDesc = new Description("TEST");
         try{
-            setUp();
+            if (sessionFactory == null) {
+                setUp();
+            }
 
             Session session = sessionFactory.openSession();
             session.beginTransaction();
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertDescription");
 
-            session.persist(description);
+            storedProcedure.registerStoredProcedureParameter("p_DescriptionText", String.class, ParameterMode.IN);
+
+
+            storedProcedure.setParameter("p_DescriptionText", description);
+
+            storedProcedure.execute();
 
             session.getTransaction().commit();
 

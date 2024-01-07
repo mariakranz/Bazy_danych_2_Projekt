@@ -12,7 +12,7 @@ public class DescriptionsManagement {
         return db.getDescriptions();
     }
 
-    public void addDescriptionToDatabase(Description description){
+    public void addDescriptionToDatabase(String description){
         //Description newDescription = new Description(text);
         db.saveDescriptionToDB(description);
     }
