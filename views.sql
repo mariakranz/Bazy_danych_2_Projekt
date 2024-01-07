@@ -1,4 +1,5 @@
 #widok budynku
+use hotelsapp;
 CREATE VIEW BuildingInfo AS
 SELECT 
     b.id AS BuildingID,
@@ -10,6 +11,7 @@ FROM buildings b
 JOIN descriptions d ON b.DescriptionID = d.id
 LEFT JOIN rooms r ON b.id = r.BuildingID
 GROUP BY b.id;
+
 #widok pokoju
 CREATE VIEW RoomInfo AS
 SELECT
@@ -25,6 +27,7 @@ SELECT
 FROM rooms r
 JOIN descriptions d ON r.DescriptionID = d.ID
 JOIN BuildingInfo bi ON r.BuildingID = bi.BuildingID;
+
 # widok pracownika
 CREATE VIEW EmployeeInfo AS
 SELECT 

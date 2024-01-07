@@ -8,12 +8,12 @@ import java.util.List;
 
 public class DescriptionsManagement {
     private final DatabaseConnector db = new DatabaseConnector();
-    public String getAllDescriptions(){
-        return db.getDescriptions().toString();
+    public List<Description> getAllDescriptions(){
+        return db.getDescriptions();
     }
 
-    public void addDescriptionToDatabase(String text){
+    public void addDescriptionToDatabase(Description description){
         //Description newDescription = new Description(text);
-        db.saveDescriptionToDB(text);
+        db.saveDescriptionToDB(description);
     }
 }

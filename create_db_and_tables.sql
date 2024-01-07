@@ -1,4 +1,4 @@
-# DROP DATABASE hotelsapp;
+DROP DATABASE hotelsapp;
 
 CREATE DATABASE hotelsapp;
 
