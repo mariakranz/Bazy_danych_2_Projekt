@@ -53,6 +53,18 @@ public class Booking {
         this.room = room;
     }
 
+//    public Booking(String clientName, String clientSurname, String phoneNumber,
+//                   String email, Date startDate, Date endDate, int roomId){
+//
+//        this.clientName = clientName;
+//        this.clientSurname = clientSurname;
+//        this.phoneNumber = phoneNumber;
+//        this.email = email;
+//        this.startDate = startDate;
+//        this.endDate = endDate;
+//        this.room = new Room();
+//    }
+
     // Getters and setters
 
     public int getId() {

@@ -1,9 +1,6 @@
 package com.example.hotelsmanagementsystem.repository;
 
-import com.example.hotelsmanagementsystem.models.Department;
-import com.example.hotelsmanagementsystem.models.Description;
-import com.example.hotelsmanagementsystem.models.EmployeeInfo;
-import com.example.hotelsmanagementsystem.models.RoomInfo;
+import com.example.hotelsmanagementsystem.models.*;
 import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,6 +9,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DatabaseConnector{
@@ -169,6 +167,43 @@ public class DatabaseConnector{
             throw new RuntimeException("Error getting rooms info.", e);
         }
     }
+
+
+    public void createNewBooking(String clientName, String clientSurname, String phoneNumber,
+                                 String email, Date startDate, Date endDate, int roomID) {
+        try (Session session = sessionFactory.openSession()) {
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBooking");
+            storedProcedure.registerStoredProcedureParameter("p_ClientName", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_ClientSurname", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_PhoneNumber", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_Email", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_StartDate", Date.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_EndDate", Date.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
+
+//            storedProcedure.setParameter("p_ClientName", newBooking.getClientName());
+//            storedProcedure.setParameter("p_ClientSurname", newBooking.getClientSurname());
+//            storedProcedure.setParameter("p_PhoneNumber", newBooking.getPhoneNumber());
+//            storedProcedure.setParameter("p_Email", newBooking.getEmail());
+//            storedProcedure.setParameter("p_StartDate", newBooking.getStartDate());
+//            storedProcedure.setParameter("p_EndDate", newBooking.getEndDate());
+//            storedProcedure.setParameter("p_RoomID", newBooking.getRoom().getId());
+
+            storedProcedure.setParameter("p_ClientName", clientName);
+            storedProcedure.setParameter("p_ClientSurname", clientSurname);
+            storedProcedure.setParameter("p_PhoneNumber", phoneNumber);
+            storedProcedure.setParameter("p_Email", email);
+            storedProcedure.setParameter("p_StartDate", startDate);
+            storedProcedure.setParameter("p_EndDate", endDate);
+            storedProcedure.setParameter("p_RoomID", roomID);
+
+            storedProcedure.execute();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error finding employee.", e);
+        }
+    }
+
     public void saveDescriptionToDB(String description) {
     }
 

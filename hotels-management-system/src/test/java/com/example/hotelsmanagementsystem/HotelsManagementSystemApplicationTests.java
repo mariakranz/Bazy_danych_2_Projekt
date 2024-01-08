@@ -1,9 +1,6 @@
 package com.example.hotelsmanagementsystem;
 
-import com.example.hotelsmanagementsystem.models.Department;
-import com.example.hotelsmanagementsystem.models.Description;
-import com.example.hotelsmanagementsystem.models.EmployeeInfo;
-import com.example.hotelsmanagementsystem.models.RoomInfo;
+import com.example.hotelsmanagementsystem.models.*;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import org.hibernate.Session;
@@ -16,7 +13,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
 
 @SpringBootTest
 class HotelsManagementSystemApplicationTests {
@@ -112,6 +111,49 @@ class HotelsManagementSystemApplicationTests {
 					(String) storedProcedure.getOutputParameterValue("p_DepartmentName"));
 
 			System.out.println(employee.toString());
+
+		} catch (Exception e) {
+			throw new RuntimeException("Error finding employee.", e);
+		}
+	}
+
+	@Test
+	protected void createNewBooking( ) {
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_MONTH, 3);
+		Date dateInThreeDays = calendar.getTime();
+
+
+//		Booking newBooking = new Booking("TestName", "TestSurname", "1112-2020-20", "TestName.TestSurname@mail.com", date, dateInThreeDays, new Room());
+		String clientName ="TestName";
+		String clientSurname = "TestSurname";
+		String phoneNumber = "1112-2020-20";
+		String email = "TestName.TestSurname@mail.com";
+		Date startDate = date;
+		Date endDate = dateInThreeDays;
+		int roomID = 1;
+
+		try (Session session = sessionFactory.openSession()) {
+			StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBooking");
+			storedProcedure.registerStoredProcedureParameter("p_ClientName", String.class, ParameterMode.IN);
+			storedProcedure.registerStoredProcedureParameter("p_ClientSurname", String.class, ParameterMode.IN);
+			storedProcedure.registerStoredProcedureParameter("p_PhoneNumber", String.class, ParameterMode.IN);
+			storedProcedure.registerStoredProcedureParameter("p_Email", String.class, ParameterMode.IN);
+			storedProcedure.registerStoredProcedureParameter("p_StartDate", Date.class, ParameterMode.IN);
+			storedProcedure.registerStoredProcedureParameter("p_EndDate", Date.class, ParameterMode.IN);
+			storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
+
+			storedProcedure.setParameter("p_ClientName", clientName);
+			storedProcedure.setParameter("p_ClientSurname", clientSurname);
+			storedProcedure.setParameter("p_PhoneNumber", phoneNumber);
+			storedProcedure.setParameter("p_Email", email);
+			storedProcedure.setParameter("p_StartDate", startDate);
+			storedProcedure.setParameter("p_EndDate", endDate);
+			storedProcedure.setParameter("p_RoomID", roomID);
+
+			storedProcedure.execute();
 
 		} catch (Exception e) {
 			throw new RuntimeException("Error finding employee.", e);
