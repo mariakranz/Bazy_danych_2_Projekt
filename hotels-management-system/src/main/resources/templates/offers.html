@@ -12,9 +12,13 @@
     <header style="text-align: center">
         <h1>Pokoje</h1>
     </header>
-    <article th:each="room : ${rooms}">
-        <!--<header>
-            <h1 th:text="${room.getType()}"></h1>
+    <article th:each="room : ${rooms}" >
+        <a th:href="@{/test}" class="showRoomInfo">
+        <header th:if="${roomStat.index == 0}">
+            <h2 th:text="${room.getType()} + ' - ' + ${room.getCity()}"></h2>
+        </header>
+        <header th:if="${roomStat.index > 0}" style="border-top: #333333 solid 2px">
+            <h2 th:text="${room.getType()} + ' - ' + ${room.getCity()}"></h2>
         </header>
         <section>
             <p>
@@ -22,8 +26,9 @@
                 <b>Liczba łóżek:</b> <span th:text="${room.getBedsNumber()}"></span><br />
                 <b>Opis pokoju:</b> <span th:text="${#strings.substring(room.getRoomDescription(), 0, 50)}"></span>...
             </p>
-        </section>-->
-        </article>
+        </section>
+        </a>
+    </article>
 </section>
 </body>
 </html>

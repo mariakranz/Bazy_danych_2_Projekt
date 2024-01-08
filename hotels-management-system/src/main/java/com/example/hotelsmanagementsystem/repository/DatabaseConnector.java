@@ -111,42 +111,58 @@ public class DatabaseConnector{
         }
     }
 
-    public RoomInfo getRoomInfoByID(int id) {
-        try (Session session = sessionFactory.openSession()) {
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomInfoByID");
-            storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_Number", Integer.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_Type", String.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_BedsNumber", Integer.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_RoomDescription", String.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_BuildingDescription", String.class, ParameterMode.OUT);
-            storedProcedure.registerStoredProcedureParameter("p_RoomCount", Long.class, ParameterMode.OUT);
-
-            storedProcedure.setParameter("p_RoomID", id);
-
-            storedProcedure.execute();
-
-            return new RoomInfo( (int) storedProcedure.getOutputParameterValue("p_Number"),
-                    (String) storedProcedure.getOutputParameterValue("p_Type"),
-                    (int) storedProcedure.getOutputParameterValue("p_BedsNumber"),
-                    (String) storedProcedure.getOutputParameterValue("p_RoomDescription"),
-                    (String) storedProcedure.getOutputParameterValue("p_City"),
-                    (String) storedProcedure.getOutputParameterValue("p_Street"),
-                    (String) storedProcedure.getOutputParameterValue("p_BuildingDescription"),
-                    (Long) storedProcedure.getOutputParameterValue("p_RoomCount"));
-        } catch (Exception e) {
-            throw new RuntimeException("Error finding employee.", e);
-        }
-    }
+//    public RoomInfo getRoomInfoByID(int id) {
+//        try (Session session = sessionFactory.openSession()) {
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomInfoByID");
+//            storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_Number", Integer.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_Type", String.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_BedsNumber", Integer.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_RoomDescription", String.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_BuildingDescription", String.class, ParameterMode.OUT);
+//            storedProcedure.registerStoredProcedureParameter("p_RoomCount", Long.class, ParameterMode.OUT);
+//
+//            storedProcedure.setParameter("p_RoomID", id);
+//
+//            storedProcedure.execute();
+//
+//            return new RoomInfo( (int) storedProcedure.getOutputParameterValue("p_Number"),
+//                    (String) storedProcedure.getOutputParameterValue("p_Type"),
+//                    (int) storedProcedure.getOutputParameterValue("p_BedsNumber"),
+//                    (String) storedProcedure.getOutputParameterValue("p_RoomDescription"),
+//                    (String) storedProcedure.getOutputParameterValue("p_City"),
+//                    (String) storedProcedure.getOutputParameterValue("p_Street"),
+//                    (String) storedProcedure.getOutputParameterValue("p_BuildingDescription"),
+//                    (Long) storedProcedure.getOutputParameterValue("p_RoomCount"));
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error finding employee.", e);
+//        }
+//    }
     public List<RoomInfo> getRoomsInfo() {
         try (Session session = sessionFactory.openSession()) {
             StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomsInfo");
-            System.out.println(storedProcedure);
             storedProcedure.execute();
-            System.out.println(storedProcedure);
-            List<RoomInfo> roomInfoList = storedProcedure.getResultList();
+            List<RoomInfo> roomInfoList = new ArrayList<>();
+
+            // Assuming your stored procedure returns columns in the same order as RoomInfo fields
+            List<Object[]> resultList = storedProcedure.getResultList();
+            for (Object[] result : resultList) {
+                RoomInfo roomInfo = new RoomInfo(
+                        (Integer) result[0],
+                        (Integer) result[1],
+                        (String) result[2],
+                        (Integer) result[3],
+                        (String) result[4],
+                        (String) result[5],
+                        (String) result[6],
+                        (String) result[7],
+                        (Long) result[8]);
+
+
+                roomInfoList.add(roomInfo);
+            }
 
             return roomInfoList;
         } catch (Exception e) {

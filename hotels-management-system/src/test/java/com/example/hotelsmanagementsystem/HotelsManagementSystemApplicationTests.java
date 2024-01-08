@@ -118,38 +118,38 @@ class HotelsManagementSystemApplicationTests {
 		}
 	}
 
-	@Test
-	protected void getRoomInfoById(){
-		int id = 1;
-
-		try (Session session = sessionFactory.openSession()) {
-			StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomInfoByID");
-			storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
-			storedProcedure.registerStoredProcedureParameter("p_Number", Integer.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_Type", String.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_BedsNumber", Integer.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_RoomDescription", String.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_BuildingDescription", String.class, ParameterMode.OUT);
-			storedProcedure.registerStoredProcedureParameter("p_RoomCount", Long.class, ParameterMode.OUT);
-
-			storedProcedure.setParameter("p_RoomID", id);
-
-			storedProcedure.execute();
-
-			RoomInfo room = new RoomInfo( (int) storedProcedure.getOutputParameterValue("p_Number"),
-					(String) storedProcedure.getOutputParameterValue("p_Type"),
-					(int) storedProcedure.getOutputParameterValue("p_BedsNumber"),
-					(String) storedProcedure.getOutputParameterValue("p_RoomDescription"),
-					(String) storedProcedure.getOutputParameterValue("p_City"),
-					(String) storedProcedure.getOutputParameterValue("p_Street"),
-					(String) storedProcedure.getOutputParameterValue("p_BuildingDescription"),
-					(Long) storedProcedure.getOutputParameterValue("p_RoomCount"));
-
-			System.out.println(room);
-		} catch (Exception e) {
-			throw new RuntimeException("Error finding employee.", e);
-		}
-	}
+//	@Test
+//	protected void getRoomInfoById(){
+//		int id = 1;
+//
+//		try (Session session = sessionFactory.openSession()) {
+//			StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomInfoByID");
+//			storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
+//			storedProcedure.registerStoredProcedureParameter("p_Number", Integer.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_Type", String.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_BedsNumber", Integer.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_RoomDescription", String.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_BuildingDescription", String.class, ParameterMode.OUT);
+//			storedProcedure.registerStoredProcedureParameter("p_RoomCount", Long.class, ParameterMode.OUT);
+//
+//			storedProcedure.setParameter("p_RoomID", id);
+//
+//			storedProcedure.execute();
+//
+//			RoomInfo room = new RoomInfo( (int) storedProcedure.getOutputParameterValue("p_Number"),
+//					(String) storedProcedure.getOutputParameterValue("p_Type"),
+//					(int) storedProcedure.getOutputParameterValue("p_BedsNumber"),
+//					(String) storedProcedure.getOutputParameterValue("p_RoomDescription"),
+//					(String) storedProcedure.getOutputParameterValue("p_City"),
+//					(String) storedProcedure.getOutputParameterValue("p_Street"),
+//					(String) storedProcedure.getOutputParameterValue("p_BuildingDescription"),
+//					(Long) storedProcedure.getOutputParameterValue("p_RoomCount"));
+//
+//			System.out.println(room);
+//		} catch (Exception e) {
+//			throw new RuntimeException("Error finding employee.", e);
+//		}
+//	}
 }

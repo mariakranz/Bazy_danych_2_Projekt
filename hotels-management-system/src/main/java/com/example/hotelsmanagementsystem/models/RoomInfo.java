@@ -33,9 +33,9 @@ public class RoomInfo {
     @Column(name = "RoomCount")
     private Long roomCount;
 
-    public RoomInfo(int number, String type, int bedsNumber, String roomDescription,
+    public RoomInfo(int roomID, int number, String type, int bedsNumber, String roomDescription,
                     String city, String street, String buildingDescription, Long roomCount){
-
+        this.roomID = roomID;
         this.number = number;
         this.type = type;
         this.bedsNumber = bedsNumber;

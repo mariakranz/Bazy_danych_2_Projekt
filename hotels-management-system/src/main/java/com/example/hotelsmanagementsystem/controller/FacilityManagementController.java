@@ -39,9 +39,9 @@ public class FacilityManagementController {
     public HttpStatus test() {
         return HttpStatus.OK;
     }
-    @GetMapping("/ri")
-    public ResponseEntity<List<RoomInfo>> getAllRoms() {
-        List<RoomInfo> roomInfoList = fm.getRoomInfo();
-        return new ResponseEntity<>(roomInfoList, HttpStatus.OK);
-    }
+//    @GetMapping("/ri")
+//    public ResponseEntity<List<RoomInfo>> getAllRoms() {
+//        //List<RoomInfo> roomInfoList = fm.getRoomInfo();
+//        return new ResponseEntity<>(roomInfoList, HttpStatus.OK);
+//    }
 }
