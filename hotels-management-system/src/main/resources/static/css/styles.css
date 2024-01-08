@@ -23,6 +23,7 @@ h1 {
     background-color: #ffffff;
     position: sticky;
     top: 0;
+    z-index: 500;
 }
 .horizontal-menu {
     background-color: #333;
@@ -73,7 +74,12 @@ h1 {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 999;
+    margin: auto;
+
 }
+
+
+
 
 .login-container h2 {
     text-align: center;
@@ -128,4 +134,67 @@ h1 {
 .cancel-button:hover {
     background-color: #ddd;
     text-decoration: none;
+}
+.room-details-container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.room-details h2 {
+    text-align: center;
+    color: #333;
+}
+
+.room-details {
+    margin-bottom: 15px;
+}
+
+.room-details p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.cancel-button {
+    display: inline-block;
+    padding: 8px 12px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+    color: #333;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #ddd;
+    text-decoration: none;
+}
+.book-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.book-button:hover {
+    background-color: #2980b9;
 }
