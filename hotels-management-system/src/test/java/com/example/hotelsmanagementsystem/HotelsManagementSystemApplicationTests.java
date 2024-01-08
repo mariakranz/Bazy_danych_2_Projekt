@@ -129,13 +129,14 @@ class HotelsManagementSystemApplicationTests {
 //		Booking newBooking = new Booking("TestName", "TestSurname", "1112-2020-20", "TestName.TestSurname@mail.com", date, dateInThreeDays, new Room());
 		String clientName ="TestName";
 		String clientSurname = "TestSurname";
-		String phoneNumber = "1112-2020-20";
+		String phoneNumber = "123456789";
 		String email = "TestName.TestSurname@mail.com";
 		Date startDate = date;
 		Date endDate = dateInThreeDays;
 		int roomID = 1;
 
 		try (Session session = sessionFactory.openSession()) {
+			session.beginTransaction();
 			StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBooking");
 			storedProcedure.registerStoredProcedureParameter("p_ClientName", String.class, ParameterMode.IN);
 			storedProcedure.registerStoredProcedureParameter("p_ClientSurname", String.class, ParameterMode.IN);
@@ -154,9 +155,10 @@ class HotelsManagementSystemApplicationTests {
 			storedProcedure.setParameter("p_RoomID", roomID);
 
 			storedProcedure.execute();
+			session.getTransaction().commit();
 
 		} catch (Exception e) {
-			throw new RuntimeException("Error finding employee.", e);
+			throw new RuntimeException("Error creating booking.", e);
 		}
 	}
 
