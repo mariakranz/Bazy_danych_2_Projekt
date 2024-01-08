@@ -1,11 +1,132 @@
 DELIMITER //
-
 CREATE PROCEDURE GetDepartmentNames()
 BEGIN
     SELECT name FROM hotelsapp.departments;
 END //
 
 DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE GetDepartments()
+BEGIN
+    SELECT * FROM hotelsapp.departments;
+END //
+
+
+
+#GetEmlpoyeeInfo
+DELIMITER //
+
+CREATE PROCEDURE GetEmployeeInfoByID(
+    IN p_EmployeeID INT,
+    -- OUT p_EmployeeID_out INT,
+    OUT p_EmployeeName VARCHAR(255),
+    OUT p_EmployeeSurname VARCHAR(255),
+    OUT p_EmployeePhone VARCHAR(9),
+    OUT p_EmployeeEmail VARCHAR(255),
+    OUT p_EmployeePrivilege INT,
+    OUT p_DepartmentName VARCHAR(255)
+)
+BEGIN
+    SELECT
+        EmployeeID,
+        EmployeeName,
+        EmployeeSurname,
+        EmployeePhone,
+        EmployeeEmail,
+        EmployeePrivilege,
+        DepartmentName
+    INTO
+        p_EmployeeID,
+        p_EmployeeName,
+        p_EmployeeSurname,
+        p_EmployeePhone,
+        p_EmployeeEmail,
+        p_EmployeePrivilege,
+        p_DepartmentName
+    FROM
+        employeeinfo
+    WHERE
+        EmployeeId = p_EmployeeID;
+END //
+
+DELIMITER ;
+
+CALL GetEmployeeInfoByID(1, @EmployeeName, @EmployeeSurname, @EmployeePhone, @EmployeeEmail, @EmployeePrivilege, @DepartmentName);
+SELECT @EmployeeID, @EmployeeName, @EmployeeSurname, @EmployeePhone, @EmployeeEmail, @EmployeePrivilege, @DepartmentName;
+
+#GetRoomInfo
+DELIMITER //
+
+CREATE PROCEDURE GetRoomInfoByID(
+    IN p_RoomID INT,
+    OUT p_Number INT,
+    OUT p_Type VARCHAR(255),
+    OUT p_BedsNumber INT,
+    OUT p_RoomDescription VARCHAR(255),
+    OUT p_City VARCHAR(255),
+    OUT p_Street VARCHAR(255),
+    OUT p_BuildingDescription VARCHAR(255),
+    OUT p_RoomCount BIGINT
+)
+BEGIN
+    SELECT
+        RoomID,
+        Number,
+        Type,
+        BedsNumber,
+        RoomDescription,
+        City,
+        Street,
+        BuildingDescription,
+        RoomCount
+    INTO
+        p_RoomID,
+        p_Number,
+        p_Type,
+        p_BedsNumber,
+        p_RoomDescription,
+        p_City,
+        p_Street,
+        p_BuildingDescription,
+        p_RoomCount
+    FROM
+        RoomInfo
+    WHERE
+        RoomID = p_RoomID;
+END //
+
+DELIMITER ;
+
+CALL GetRoomInfoByID(1, @Number, @Type, @BedsNumber, @RoomDescription, @City, @Street, @BuildingDescription, @RoomCount);
+SELECT @Number, @Type, @BedsNumber, @RoomDescription, @City, @Street, @BuildingDescription, @RoomCount;
+
+
+DELIMITER ;
+
+CALL GetDepartments();
+
+DELIMITER //
+
+CREATE PROCEDURE GetDepartmentsV2()
+BEGIN
+    SELECT id, Name, ManagerID FROM hotelsapp.departments;
+END //
+
+DELIMITER ;
+CALL GetDepartments();
+
+DELIMITER //
+
+CREATE PROCEDURE GetDescriptions()
+BEGIN
+    SELECT * FROM hotelsapp.descriptions;
+END //
+
+DELIMITER ;
+
+call GetDescriptions();
 
 #procedury z pliku "Operacje Use-case.sql"
 

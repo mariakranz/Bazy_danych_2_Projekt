@@ -2,9 +2,11 @@ package com.example.hotelsmanagementsystem.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "descriptions", uniqueConstraints = {@UniqueConstraint(columnNames = "Description", name = "Description_UNIQUE")})
-public class Description {
+public class Description implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

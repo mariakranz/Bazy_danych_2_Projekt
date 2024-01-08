@@ -2,11 +2,19 @@ package com.example.hotelsmanagementsystem.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
+//@NamedNativeQueries({
+//        @NamedNativeQuery(
+//                name = "callGetDepartments",
+//                query = "CALL GetDepartments()",
+//                resultClass = Department.class)
+//})
 @Entity
 @Table(name = "departments",
         uniqueConstraints = {@UniqueConstraint(columnNames = "Name", name = "Name_UNIQUE")},
         indexes = {@Index(name = "ManagerID_idx", columnList = "ManagerID")})
-public class Department {
+public class Department implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,16 +24,25 @@ public class Department {
     @Column(name = "Name", nullable = false, length = 255)
     private String name;
 
-//    @Column(name = "ManagerID", nullable = false, insertable=false, updatable=false)
-//    //@Column(insertable=false, updatable=false)
-//    private int managerID;
-
     @ManyToOne
-    //@JoinColumn(name = "ManagerID", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     @JoinColumn(name = "ManagerID", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "ManagerIDfk", foreignKeyDefinition = "FOREIGN KEY (ManagerID) REFERENCES employees(id) ON DELETE RESTRICT ON UPDATE NO ACTION"))
-    //@JoinColumn(name = "ManagerID", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "ManagerIDfk", foreignKeyDefinition = "FOREIGN KEY (ManagerID) REFERENCES employees(id)"))
-    private Employee manager;
+   private Employee manager;
 
+    public Department(){
+
+    }
+
+    public  Department(int id, String name, Employee manager){
+        this.id = id;
+        this.name = name;
+        this.manager = manager;
+    }
+
+    public  Department(String name, Employee manager){
+
+        this.name = name;
+        this.manager = manager;
+    }
     // Getters and setters
 
     public int getId() {
