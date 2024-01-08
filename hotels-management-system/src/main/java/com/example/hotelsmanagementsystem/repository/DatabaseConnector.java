@@ -79,9 +79,22 @@ public class DatabaseConnector{
 
             return (int) storedProcedure.getOutputParameterValue("p_EmployeeID");
         } catch (Exception e) {
-            throw new RuntimeException("Error authenticating user", e);
+            return -1;
         }
     }
+    public void updateLastLoginDate(int EmpId) {
+            try (Session session = sessionFactory.openSession()) {
+                StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("UpdateLastLoginDate");
+                storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
+
+                storedProcedure.setParameter("p_EmployeeID", EmpId);
+
+                storedProcedure.execute();
+
+            } catch (Exception e) {
+                throw new RuntimeException("Error authenticating user", e);
+            }
+        }
 
     public EmployeeInfo getEmployeeInfoByID(int id) {
         try (Session session = sessionFactory.openSession()) {

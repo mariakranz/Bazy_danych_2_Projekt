@@ -1,6 +1,9 @@
 package com.example.hotelsmanagementsystem.controller;
 
+import com.example.hotelsmanagementsystem.models.Employee;
+import com.example.hotelsmanagementsystem.models.EmployeeInfo;
 import com.example.hotelsmanagementsystem.models.RoomInfo;
+import com.example.hotelsmanagementsystem.service.EmployeesManagementService;
 import com.example.hotelsmanagementsystem.service.FacilitiesManagementService;
 import com.example.hotelsmanagementsystem.service.LoginService;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import java.util.List;
 @Controller
 public class ViewController {
     Integer EmpId = -1;
+    EmployeeInfo employee;
     ModelAndView mav;
     List<RoomInfo> roomsInfo;
 
@@ -42,21 +46,30 @@ public class ViewController {
     @GetMapping({"/openLoginForm"})
     public ModelAndView getLoginForm() {
         mav.getModel().put("showLoginForm", true);
+        mav.addObject("bedLogin", false);
         return mav;
     }
     @PostMapping({"/lEmp"})
     public ModelAndView lEmp(@RequestParam String username, @RequestParam String password) {
         LoginService loginService = new LoginService();
+        EmployeesManagementService em = new EmployeesManagementService();
         EmpId = loginService.authenticateUser(username, password);
-        System.out.println(EmpId);
-        mav.getModel().put("EmpId", EmpId);
-        mav.getModel().put("showLoginForm", false);
+        if(EmpId == -1){
+            mav.getModel().put("badLogin", true);
+        }else{
+            loginService.updateLastLoginDate(EmpId);
+            employee = em.getEmployeeInfoByID(EmpId);
+            mav.getModel().put("EmpId", EmpId);
+            mav.getModel().put("showLoginForm", false);
+        }
+
         return mav;
     }
     @GetMapping({"/closeLoginForm"})
     public ModelAndView closeLogin() {
 
         mav.getModel().put("showLoginForm", false);
+        mav.getModel().put("badLogin", false);
         return mav;
     }
     @GetMapping({"/logoutEmp"})
@@ -74,6 +87,17 @@ public class ViewController {
     @GetMapping({"/closeRoomDetails"})
     public ModelAndView closeRoomInfo() {
         mav.getModel().put("showRoomDetails", false);
+        return mav;
+    }
+    @GetMapping({"/profil"})
+    public ModelAndView getProfilPage() {
+        FacilitiesManagementService fm = new FacilitiesManagementService();
+        roomsInfo = fm.getRoomInfo();
+        mav = new ModelAndView("profil");
+        mav.addObject("title", "Profil");
+        mav.addObject("EmpId", EmpId);
+        mav.addObject("showLoginForm", false);
+        mav.addObject("employee", employee);
         return mav;
     }
 }

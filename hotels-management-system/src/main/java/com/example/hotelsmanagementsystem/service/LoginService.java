@@ -20,4 +20,7 @@ public class LoginService {
     public int authenticateUser(String login, String password) {
         return db.authenticateUser(login, password);
     }
+    public void updateLastLoginDate(int EmpId) {
+        db.updateLastLoginDate(EmpId);
+    }
 }

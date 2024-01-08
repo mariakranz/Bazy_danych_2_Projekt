@@ -56,6 +56,7 @@
         </div>
         <div th:if="${showLoginForm}" class="login-container" th:fragment="loginForm">
             <h2>Logowanie</h2>
+            <span th:if="${badLogin}" style="color: red"><strong>Błędny login lub hasło!!!</strong></span>
             <form class="login-form" action="#" method="post" th:action="@{/lEmp}">
                 <div class="form-group">
                     <label for="username">Nazwa użytkownika:</label>

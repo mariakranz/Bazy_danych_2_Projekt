@@ -10,6 +10,11 @@
       <h1>Profil</h1>
     </header>
     <section>
+      <p><strong>Imię:</strong> <span th:text="${employee.getEmployeeName()}"></span></p>
+      <p><strong>Nazwisko:</strong> <span th:text="${employee.getEmployeeSurname()}"></span></p>
+      <p><strong>Numer telefonu:</strong> <span th:text="${employee.getEmployeePhone()}"></span></p>
+      <p><strong>Email:</strong> <span th:text="${employee.getEmployeeEmail()}"></span></p>
+      <p><strong>Dział:</strong> <span th:text="${employee.getDepartmentName()}"></span></p>
 
     </section>
   </article>
