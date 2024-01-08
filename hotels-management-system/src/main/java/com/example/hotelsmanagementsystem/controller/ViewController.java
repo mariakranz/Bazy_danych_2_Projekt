@@ -1,7 +1,7 @@
 package com.example.hotelsmanagementsystem.controller;
 
-import com.example.hotelsmanagementsystem.models.Description;
-import com.example.hotelsmanagementsystem.service.DescriptionsManagement;
+import com.example.hotelsmanagementsystem.models.RoomInfo;
+import com.example.hotelsmanagementsystem.service.FacilitiesManagementService;
 import com.example.hotelsmanagementsystem.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +25,15 @@ public class ViewController {
     }
     @GetMapping({"/offers"})
     public ModelAndView getOffersPage() {
+        FacilitiesManagementService fm = new FacilitiesManagementService();
+        List<RoomInfo> roomsInfo = fm.getRoomInfo();
         mav = new ModelAndView("offers");
         mav.addObject("title", "Oferty");
         mav.addObject("EmpId", EmpId);
         mav.addObject("showLoginForm", false);
+        mav.addObject("rooms", roomsInfo);
+
+        System.out.println(roomsInfo.get(0).getType());
         return mav;
     }
     @GetMapping({"/openLoginForm"})

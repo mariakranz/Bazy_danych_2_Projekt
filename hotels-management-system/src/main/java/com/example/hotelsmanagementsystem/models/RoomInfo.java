@@ -1,6 +1,7 @@
 package com.example.hotelsmanagementsystem.models;
 import jakarta.persistence.*;
 
+
 @Entity
 public class RoomInfo {
 

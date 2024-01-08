@@ -4,17 +4,14 @@ import com.example.hotelsmanagementsystem.models.Department;
 import com.example.hotelsmanagementsystem.models.Description;
 import com.example.hotelsmanagementsystem.models.EmployeeInfo;
 import com.example.hotelsmanagementsystem.models.RoomInfo;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.StoredProcedureQuery;
+import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.NativeQuery;
-import org.hibernate.query.Query;
 
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseConnector{
@@ -143,7 +140,19 @@ public class DatabaseConnector{
             throw new RuntimeException("Error finding employee.", e);
         }
     }
+    public List<RoomInfo> getRoomsInfo() {
+        try (Session session = sessionFactory.openSession()) {
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomsInfo");
+            System.out.println(storedProcedure);
+            storedProcedure.execute();
+            System.out.println(storedProcedure);
+            List<RoomInfo> roomInfoList = storedProcedure.getResultList();
 
+            return roomInfoList;
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting rooms info.", e);
+        }
+    }
     public void saveDescriptionToDB(String description) {
     }
 

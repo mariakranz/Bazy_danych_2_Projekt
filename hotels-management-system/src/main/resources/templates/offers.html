@@ -1,6 +1,6 @@
 <!-- offers.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="fragments/fragments :: head">
 
 </head>
@@ -12,37 +12,18 @@
     <header style="text-align: center">
         <h1>Pokoje</h1>
     </header>
-    <!--<article th:each="room : ${rooms}">
-            <header>
-                <h1 th:text="${room.type} ' - ' ${room.City}"></h1>
-            </header>
-        <section>
-            <p>
-                <b>Typ pokoju:</b> <span th:text="${room.type}"></span><br />
-                <b>Liczba łóżek:</b> <span th:text="${room.bedsNumber}"></span><br />
-                <b>Opis pokoju:</b> <span th:text="${#strings.substring(room.Roomdescription, 0, 50)}"></span>...
-
-    </p>
-</section>
-</article>
-
-
-
-    -->
-    <article th:each="iteration : ${#numbers.sequence(1, 10)}">
-        <header>
-            <h2 th:text="'typ - city'"></h2>
+    <article th:each="room : ${rooms}">
+        <!--<header>
+            <h1 th:text="${room.getType()}"></h1>
         </header>
         <section>
             <p>
-                <b>Typ pokoju:</b> <span th:text="type"></span><br />
-                <b>Liczba łóżek:</b> <span th:text="bedsnumber"></span><br />
-                <b>Opis pokoju:</b> <span th:text="descriptiondescriptiondescriptiondescriptiondescriptiondescription"></span>...
-                <br /><br />
-                <!-- Pozostałe informacje o pokoju -->
+                <b>Typ pokoju:</b> <span th:text="${room.getType()}"></span><br />
+                <b>Liczba łóżek:</b> <span th:text="${room.getBedsNumber()}"></span><br />
+                <b>Opis pokoju:</b> <span th:text="${#strings.substring(room.getRoomDescription(), 0, 50)}"></span>...
             </p>
-        </section>
-    </article>
+        </section>-->
+        </article>
 </section>
 </body>
 </html>
