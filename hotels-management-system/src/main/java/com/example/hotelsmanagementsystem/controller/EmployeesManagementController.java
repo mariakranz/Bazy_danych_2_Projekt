@@ -1,19 +1,16 @@
 package com.example.hotelsmanagementsystem.controller;
 
-import com.example.hotelsmanagementsystem.service.EmployeesManagement;
-import com.example.hotelsmanagementsystem.service.ManagingDepartments;
+import com.example.hotelsmanagementsystem.service.EmployeesManagementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/employees")
 public class EmployeesManagementController {
-    private final EmployeesManagement em = new EmployeesManagement();
+    private final EmployeesManagementService em = new EmployeesManagementService();
     //ManagingDepartments _departemntMagager;
 
 //    @GetMapping("/departments")

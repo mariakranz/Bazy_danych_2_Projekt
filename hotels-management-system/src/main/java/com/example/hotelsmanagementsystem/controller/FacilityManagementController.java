@@ -1,21 +1,17 @@
 package com.example.hotelsmanagementsystem.controller;
 
 import com.example.hotelsmanagementsystem.models.Description;
-import com.example.hotelsmanagementsystem.service.DescriptionsManagement;
-import io.swagger.annotations.BasicAuthDefinition;
+import com.example.hotelsmanagementsystem.service.DescriptionsManagementService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-@RestController
+@Controller
 @RequestMapping("/facilities")
 public class FacilityManagementController {
-    private final DescriptionsManagement dm = new DescriptionsManagement();
+    private final DescriptionsManagementService dm = new DescriptionsManagementService();
 //    @GetMapping("/descriptions")
 //    public String getAllDescriptions() {
 //
@@ -32,6 +28,11 @@ public class FacilityManagementController {
         //dm.addDescriptionToDatabase(description);
         return HttpStatus.ACCEPTED;
         //return "OK";
+    }
+
+    @PostMapping("/test")       //fixme: nie da sie dobic do tego endpointa
+    public HttpStatus test() {
+        return HttpStatus.OK;
     }
 
 }
