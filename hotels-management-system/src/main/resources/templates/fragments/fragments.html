@@ -40,7 +40,7 @@
                             <a class="nav-link" th:href="@{/openLoginForm}">Logowanie</a>
                         </li>
                         <li class="nav-item" th:if="${EmpId > 0}">
-                            <a class="nav-link" href="index.html">Profil</a>
+                            <a class="nav-link" th:href="@{/profil}">Profil</a>
                         </li>
                         <li class="nav-item" th:if="${EmpId > 0}">
                             <a class="nav-link" href="index.html">Panel zarządzania</a>
@@ -76,14 +76,14 @@
     <div th:if="${showRoomDetails}" class="room-details-container" th:fragment="roomDetails">
         <h2>Szczegóły pokoju</h2>
         <div class="room-details">
-            <p><strong>Numer pokoju:</strong> <span th:text="${room.number}"></span></p>
-            <p><strong>Typ pokoju:</strong> <span th:text="${room.type}"></span></p>
-            <p><strong>Opis:</strong> <span th:text="${room.description}"></span></p>
-            <p><strong>Miasto:</strong> <span th:text="${room.city}"></span></p>
-            <p><strong>Ulica:</strong> <span th:text="${room.street}"></span></p>
-            <p><strong>Liczba łóżek:</strong> <span th:text="${room.bedsNumber}"></span></p>
-            <p><strong>Opis budynku:</strong> <span th:text="${room.buildingDescription}"></span></p>
-            <p><strong>Liczba pokoi w budynku:</strong> <span th:text="${room.roomsInBuilding}"></span></p>
+            <p><strong>Numer pokoju:</strong> <span th:text="${room.getNumber()}"></span></p>
+            <p><strong>Typ pokoju:</strong> <span th:text="${room.getType()}"></span></p>
+            <p><strong>Opis:</strong> <span th:text="${room.getRoomDescription()}"></span></p>
+            <p><strong>Miasto:</strong> <span th:text="${room.getCity()}"></span></p>
+            <p><strong>Ulica:</strong> <span th:text="${room.getStreet()}"></span></p>
+            <p><strong>Liczba łóżek:</strong> <span th:text="${room.getBedsNumber()}"></span></p>
+            <p><strong>Opis budynku:</strong> <span th:text="${room.getBuildingDescription()}"></span></p>
+            <p><strong>Liczba pokoi w budynku:</strong> <span th:text="${room.getRoomCount()}"></span></p>
         </div>
         <div class="form-group">
             <a th:href="@{/bookRoom}" class="book-button">Zarezerwuj</a>

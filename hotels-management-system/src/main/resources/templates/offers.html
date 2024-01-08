@@ -13,7 +13,7 @@
         <h1>Pokoje</h1>
     </header>
     <article th:each="room : ${rooms}" >
-        <a th:href="@{/test}" class="showRoomInfo">
+        <a th:href="@{/roomInfo(room=${roomStat.index})}" class="showRoomInfo">
         <header th:if="${roomStat.index == 0}">
             <h2 th:text="${room.getType()} + ' - ' + ${room.getCity()}"></h2>
         </header>

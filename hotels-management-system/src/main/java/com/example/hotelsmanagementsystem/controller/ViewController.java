@@ -6,6 +6,7 @@ import com.example.hotelsmanagementsystem.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,6 +16,8 @@ import java.util.List;
 public class ViewController {
     Integer EmpId = -1;
     ModelAndView mav;
+    List<RoomInfo> roomsInfo;
+
     @GetMapping( "/")
     public ModelAndView getIndexPage() {
         mav = new ModelAndView("index");
@@ -26,7 +29,7 @@ public class ViewController {
     @GetMapping({"/offers"})
     public ModelAndView getOffersPage() {
         FacilitiesManagementService fm = new FacilitiesManagementService();
-        List<RoomInfo> roomsInfo = fm.getRoomInfo();
+        roomsInfo = fm.getRoomInfo();
         mav = new ModelAndView("offers");
         mav.addObject("title", "Oferty");
         mav.addObject("EmpId", EmpId);
@@ -60,6 +63,17 @@ public class ViewController {
     public ModelAndView logoutEmp() {
         EmpId = -1;
         mav.getModel().put("EmpId", EmpId);
+        return mav;
+    }
+    @GetMapping({"/roomInfo"})
+    public ModelAndView roomInfo(@RequestParam String room) {
+        mav.addObject("room", roomsInfo.get(Integer.parseInt(room)));
+        mav.addObject("showRoomDetails", true);
+        return mav;
+    }
+    @GetMapping({"/closeRoomDetails"})
+    public ModelAndView closeRoomInfo() {
+        mav.getModel().put("showRoomDetails", false);
         return mav;
     }
 }

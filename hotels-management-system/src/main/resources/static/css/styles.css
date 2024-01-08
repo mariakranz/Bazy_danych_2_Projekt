@@ -198,3 +198,13 @@ h1 {
 .book-button:hover {
     background-color: #2980b9;
 }
+.showRoomInfo{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.showRoomInfo:hover{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
