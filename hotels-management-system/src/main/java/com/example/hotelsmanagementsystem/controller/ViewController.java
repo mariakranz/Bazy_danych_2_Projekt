@@ -1,11 +1,15 @@
 package com.example.hotelsmanagementsystem.controller;
 
+import com.example.hotelsmanagementsystem.models.Description;
+import com.example.hotelsmanagementsystem.service.DescriptionsManagement;
 import com.example.hotelsmanagementsystem.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class ViewController {
