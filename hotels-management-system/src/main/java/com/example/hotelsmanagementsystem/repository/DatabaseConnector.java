@@ -172,6 +172,7 @@ public class DatabaseConnector{
     public void createNewBooking(String clientName, String clientSurname, String phoneNumber,
                                  String email, Date startDate, Date endDate, int roomID) {
         try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
             StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBooking");
             storedProcedure.registerStoredProcedureParameter("p_ClientName", String.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("p_ClientSurname", String.class, ParameterMode.IN);
@@ -197,10 +198,12 @@ public class DatabaseConnector{
             storedProcedure.setParameter("p_EndDate", endDate);
             storedProcedure.setParameter("p_RoomID", roomID);
 
+
             storedProcedure.execute();
+            session.getTransaction().commit();
 
         } catch (Exception e) {
-            throw new RuntimeException("Error finding employee.", e);
+            throw new RuntimeException("Error creating booking.", e);
         }
     }
 
