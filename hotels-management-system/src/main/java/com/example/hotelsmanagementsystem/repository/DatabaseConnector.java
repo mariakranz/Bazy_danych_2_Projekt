@@ -2,6 +2,7 @@ package com.example.hotelsmanagementsystem.repository;
 
 import com.example.hotelsmanagementsystem.models.*;
 import jakarta.persistence.*;
+import jakarta.websocket.Decoder;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -151,9 +152,29 @@ public class DatabaseConnector{
 //            throw new RuntimeException("Error finding employee.", e);
 //        }
 //    }
-    public List<RoomInfo> getRoomsInfo() {
+    public List<RoomInfo> getRoomsInfo(int bNumber, String city, String type) {
+        Byte filterType = 0b000;
+        if (bNumber > 0){
+            filterType = (byte) (filterType | (1 << 2));
+        }
+        if (!city.isEmpty()){
+            filterType = (byte) (filterType | (1 << 1));
+        }
+        if (!type.isEmpty()){
+            filterType = (byte) (filterType | (1));
+        }
+        System.out.println(filterType);
         try (Session session = sessionFactory.openSession()) {
             StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomsInfo");
+            storedProcedure.registerStoredProcedureParameter("filterType", Byte.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("bNumber", Integer.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("city", String.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("roomType", String.class, ParameterMode.IN);
+
+            storedProcedure.setParameter("filterType", filterType);
+            storedProcedure.setParameter("bNumber", bNumber);
+            storedProcedure.setParameter("city", city);
+            storedProcedure.setParameter("roomType", type);
             storedProcedure.execute();
             List<RoomInfo> roomInfoList = new ArrayList<>();
 

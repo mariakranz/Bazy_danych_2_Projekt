@@ -14,7 +14,7 @@ public class FacilitiesManagementService {
 //    public RoomInfo getRoomInfoById(int id){
 //        return db.getRoomInfoByID(id);
 //    }
-    public List<RoomInfo> getRoomInfo(){
-        return db.getRoomsInfo();
+    public List<RoomInfo> getRoomInfo(int bNumber, String city, String type){
+        return db.getRoomsInfo(bNumber, city, type);
     }
 }

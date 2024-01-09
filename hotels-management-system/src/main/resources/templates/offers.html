@@ -7,10 +7,29 @@
 <body>
 <div  th:replace="fragments/fragments :: fragmentsGroup"></div>
 <div  th:replace="fragments/fragments :: roomDetails"></div>
+<section class="section">
+    <header><h3>Filtry</h3></header>
+    <form th:action="@{/roomFilter}" method="post">
+        <label for="bNumber" >Liczba łóżek:</label>
+        <input id="bNumber" name="bNumber" type="number" value="0"/>
+        <label for="type" >Typ pokoju:</label>
+        <select id="type" name="type">
+            <option value="" ></option>
+            <option value="Apartament" >Apartament</option>
+            <option value="Double">Double</option>
+            <option value="Single">Single</option>
+            <option value="Suite">Suite</option>
+            <option value="Family">Family</option>
+        </select>
+        <label for="city" >Miasto:</label>
+        <input id="city" name="city" type="text"/>
+        <input id="btF" type="submit" value="Filtruj"/>
 
+    </form>
+</section>
 <section class="section">
     <header style="text-align: center">
-        <h1>Pokoje</h1>
+        <h2>Pokoje</h2>
     </header>
     <article th:each="room : ${rooms}" >
         <a th:href="@{/roomInfo(room=${roomStat.index})}" class="showRoomInfo">

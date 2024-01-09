@@ -1,3 +1,49 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetRoomsInfo`(
+    IN filterType BINARY,
+    IN bNumber INT,
+    IN city VARCHAR(255),
+    IN roomType VARCHAR(255)
+)
+BEGIN
+    DECLARE filterCondition VARCHAR(255);
+
+    SET filterCondition = '';
+
+    -- Sprawdzanie poszczególnych bitów w filterType
+    IF (filterType & b'100') = b'100' THEN
+        SET filterCondition = CONCAT(filterCondition, ' AND BedsNumber = ', bNumber);
+END IF;
+
+    IF (filterType & b'010') = b'010' THEN
+        SET filterCondition = CONCAT(filterCondition, ' AND City = "', city, '"');
+END IF;
+
+    IF (filterType & b'001') = b'001' THEN
+        SET filterCondition = CONCAT(filterCondition, ' AND Type = "', roomType, '"');
+END IF;
+
+    -- Usuwanie pierwszego 'AND' z warunku
+    IF LENGTH(filterCondition) > 0 THEN
+        SET filterCondition = SUBSTRING(filterCondition, 5);
+
+        -- Wykonanie zapytania z uwzględnieniem warunków
+        SET @query = CONCAT('SELECT * FROM hotelsapp.roominfo WHERE ', filterCondition);
+
+PREPARE stmt FROM @query;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+ELSE
+        -- Wykonanie zapytania bez warunków
+SELECT * FROM hotelsapp.roominfo;
+END IF;
+END
+
+
+
+
+
+
+
 DELIMITER //
 CREATE PROCEDURE GetDepartmentNames()
 BEGIN
@@ -99,8 +145,7 @@ END //
 
 DELIMITER ;
 
-CALL GetRoomInfoByID(1, @Number, @Type, @BedsNumber, @RoomDescription, @City, @Street, @BuildingDescription, @RoomCount);
-SELECT @Number, @Type, @BedsNumber, @RoomDescription, @City, @Street, @BuildingDescription, @RoomCount;
+
 
 
 DELIMITER ;

@@ -33,7 +33,7 @@ public class ViewController {
     @GetMapping({"/offers"})
     public ModelAndView getOffersPage() {
         FacilitiesManagementService fm = new FacilitiesManagementService();
-        roomsInfo = fm.getRoomInfo();
+        roomsInfo = fm.getRoomInfo(0,"", "");
         mav = new ModelAndView("offers");
         mav.addObject("title", "Oferty");
         mav.addObject("EmpId", EmpId);
@@ -91,13 +91,19 @@ public class ViewController {
     }
     @GetMapping({"/profil"})
     public ModelAndView getProfilPage() {
-        FacilitiesManagementService fm = new FacilitiesManagementService();
-        roomsInfo = fm.getRoomInfo();
         mav = new ModelAndView("profil");
         mav.addObject("title", "Profil");
         mav.addObject("EmpId", EmpId);
         mav.addObject("showLoginForm", false);
         mav.addObject("employee", employee);
+        return mav;
+    }
+    @PostMapping({"/roomFilter"})
+    public ModelAndView lEmp(@RequestParam String bNumber, @RequestParam String type,@RequestParam String city) {
+        FacilitiesManagementService fm = new FacilitiesManagementService();
+        roomsInfo = fm.getRoomInfo(Integer.parseInt(bNumber), city, type);
+        mav.getModel().put("rooms", roomsInfo);
+
         return mav;
     }
 }
