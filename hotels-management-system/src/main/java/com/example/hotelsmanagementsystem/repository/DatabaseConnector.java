@@ -203,8 +203,8 @@ public class DatabaseConnector{
     }
 
 
-    public void createNewBooking(String clientName, String clientSurname, String phoneNumber,
-                                 String email, Date startDate, Date endDate, int roomID) {
+    public boolean createNewBooking (String clientName, String clientSurname, String phoneNumber,
+                                 String email, Date startDate, Date endDate, int roomID) throws RuntimeException{
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBooking");
@@ -215,6 +215,7 @@ public class DatabaseConnector{
             storedProcedure.registerStoredProcedureParameter("p_StartDate", Date.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("p_EndDate", Date.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter("p_Success", Boolean.class, ParameterMode.OUT);
 
 //            storedProcedure.setParameter("p_ClientName", newBooking.getClientName());
 //            storedProcedure.setParameter("p_ClientSurname", newBooking.getClientSurname());
@@ -233,8 +234,10 @@ public class DatabaseConnector{
             storedProcedure.setParameter("p_RoomID", roomID);
 
 
+
             storedProcedure.execute();
-            session.getTransaction().commit();
+            //session.getTransaction().commit();
+            return (Boolean) storedProcedure.getOutputParameterValue("p_Success");
 
         } catch (Exception e) {
             throw new RuntimeException("Error creating booking.", e);
@@ -245,7 +248,13 @@ public class DatabaseConnector{
     }
 
 
-
+//    protected void createEntityManager(){
+//        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("manager1");
+//        EntityManager entityManager = entityManagerFactory.createEntityManager();
+//
+//        entityManager.close();
+//        entityManagerFactory.close();
+//    }
 
 //    private SessionFactory sessionFactory;
 //

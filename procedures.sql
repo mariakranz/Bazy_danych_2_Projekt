@@ -1,3 +1,4 @@
+DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetRoomsInfo`(
     IN filterType BINARY,
     IN bNumber INT,
@@ -36,7 +37,7 @@ ELSE
         -- Wykonanie zapytania bez warunków
 SELECT * FROM hotelsapp.roominfo;
 END IF;
-END
+END //
 
 
 
@@ -176,16 +177,16 @@ call GetDescriptions();
 #procedury z pliku "Operacje Use-case.sql"
 
 #Przeglądanie listy pokojów
+-- DELIMITER //
+-- CREATE PROCEDURE GetRoomsInfo()
+-- BEGIN
+--     Select * from hotelsapp.roominfo;
+-- END //
+-- DELIMITER ;
+
 DELIMITER //
-CREATE PROCEDURE GetRoomsInfo()
-BEGIN
-    Select * from hotelsapp.roominfo;
-END //
-DELIMITER ;
 
 #Rezerwacja pokoju
-DELIMITER //
-
 CREATE PROCEDURE InsertBooking(
     IN p_ClientName VARCHAR(255),
     IN p_ClientSurname VARCHAR(255),
@@ -193,11 +194,31 @@ CREATE PROCEDURE InsertBooking(
     IN p_Email VARCHAR(255),
     IN p_StartDate DATE,
     IN p_EndDate DATE,
-    IN p_RoomID INT
+    IN p_RoomID INT,
+    OUT p_Success BOOLEAN
 )
 BEGIN
-    INSERT INTO bookings (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID)
-    VALUES (p_ClientName, p_ClientSurname, p_PhoneNumber, p_Email, p_StartDate, p_EndDate, p_RoomID);
+    DECLARE conflict_count INT;
+
+    -- Sprawdzenie, czy istnieje już rezerwacja na dany pokój w podanym czasie
+    SELECT COUNT(*) INTO conflict_count
+    FROM bookings
+    WHERE RoomID = p_RoomID
+    AND ((StartDate >= p_StartDate AND StartDate < p_EndDate)
+    OR (EndDate > p_StartDate AND EndDate <= p_EndDate)
+    OR (StartDate <= p_StartDate AND EndDate >= p_EndDate));
+
+    IF conflict_count > 0 THEN
+        -- Jeśli istnieje konflikt, ustaw p_Success na false
+        SET p_Success = FALSE;
+    ELSE
+        -- Wstawienie rezerwacji do bazy danych
+        INSERT INTO bookings (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID)
+        VALUES (p_ClientName, p_ClientSurname, p_PhoneNumber, p_Email, p_StartDate, p_EndDate, p_RoomID);
+
+        -- Jeśli nie ma konfliktu, ustaw p_Success na true
+        SET p_Success = TRUE;
+    END IF;
 END //
 
 DELIMITER ;

@@ -1,6 +1,7 @@
 package com.example.hotelsmanagementsystem;
 
 import com.example.hotelsmanagementsystem.models.*;
+import com.example.hotelsmanagementsystem.service.LoginService;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import org.hibernate.Session;
@@ -61,12 +62,12 @@ class HotelsManagementSystemApplicationTests {
 	protected void getDescriptions(){
 
 		try(Session session = sessionFactory.openSession()){
-			session.beginTransaction();
+			//session.beginTransaction();
 
 			List<Description> descriptions = session.createQuery("select d from Description d", Description.class).list();
 			descriptions.forEach(System.out::println);
 
-			session.getTransaction().commit();
+			//session.getTransaction().commit();
 		}
 	}
 
