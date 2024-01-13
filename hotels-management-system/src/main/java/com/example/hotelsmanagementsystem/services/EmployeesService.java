@@ -1,4 +1,4 @@
-package com.example.hotelsmanagementsystem.service;
+package com.example.hotelsmanagementsystem.services;
 
 import com.example.hotelsmanagementsystem.models.EmployeeInfo;
 import com.example.hotelsmanagementsystem.repository.DatabaseConnector;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmployeesManagementService {
-    private final DatabaseConnector db = new DatabaseConnector();
+public class EmployeesService {
+    private final DatabaseConnector db = DatabaseConnector.getInstance();
 
     public List<String> getAllDepartmentsNames() {
         return db.getDepartmentsNames();

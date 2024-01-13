@@ -1,22 +1,19 @@
-package com.example.hotelsmanagementsystem.controller;
+package com.example.hotelsmanagementsystem.controllers;
 
 import com.example.hotelsmanagementsystem.models.Description;
-import com.example.hotelsmanagementsystem.models.RoomInfo;
-import com.example.hotelsmanagementsystem.service.DescriptionsManagementService;
-import com.example.hotelsmanagementsystem.service.FacilitiesManagementService;
+import com.example.hotelsmanagementsystem.services.DescriptionsService;
+import com.example.hotelsmanagementsystem.services.FacilitiesService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/facilities")
 public class FacilityManagementController {
-    private final DescriptionsManagementService dm = new DescriptionsManagementService();
-    FacilitiesManagementService fm = new FacilitiesManagementService();
+    private final DescriptionsService dm = new DescriptionsService();
+    FacilitiesService fm = new FacilitiesService();
 //    @GetMapping("/descriptions")
 //    public String getAllDescriptions() {
 //

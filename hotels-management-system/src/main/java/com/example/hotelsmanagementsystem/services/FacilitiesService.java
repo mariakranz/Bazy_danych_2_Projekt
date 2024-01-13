@@ -1,15 +1,14 @@
-package com.example.hotelsmanagementsystem.service;
+package com.example.hotelsmanagementsystem.services;
 
 import com.example.hotelsmanagementsystem.models.RoomInfo;
 import com.example.hotelsmanagementsystem.repository.DatabaseConnector;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class FacilitiesManagementService {
-    private final DatabaseConnector db = new DatabaseConnector();
+public class FacilitiesService {
+    private final DatabaseConnector db = DatabaseConnector.getInstance();
 
 //    public RoomInfo getRoomInfoById(int id){
 //        return db.getRoomInfoByID(id);

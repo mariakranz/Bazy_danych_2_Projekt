@@ -13,10 +13,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class DatabaseConnector{
-    private static final SessionFactory sessionFactory;
+public final class DatabaseConnector{
+    private static DatabaseConnector instance;
+    private final SessionFactory sessionFactory;
 
-    static {
+    public DatabaseConnector(){
         try {
             // Initialize the SessionFactory once
             final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -27,6 +28,24 @@ public class DatabaseConnector{
             throw new RuntimeException("Error initializing Hibernate SessionFactory", e);
         }
     }
+//    static {
+//        try {
+//            // Initialize the SessionFactory once
+//            final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+//                    .configure()
+//                    .build();
+//            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error initializing Hibernate SessionFactory", e);
+//        }
+//    }
+
+    public static DatabaseConnector getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnector();
+        }
+        return instance;
+    }
 
     public List<Description> getDescriptions() {        //fixme: zmienic na parametry out i reczne mapowanie
         try (Session session = sessionFactory.openSession()) {
@@ -35,6 +54,8 @@ public class DatabaseConnector{
         } catch (Exception e) {
             throw new RuntimeException("Error getting descriptions", e);
         }
+    }
+    public void saveDescriptionToDB(String description) {
     }
 
     public List<String> getDepartmentsNames() { //fixme: zmienic na parametry out i reczne mapowanie // UPDATE chyba nie da sie :')))
@@ -122,36 +143,6 @@ public class DatabaseConnector{
             throw new RuntimeException("Error finding employee.", e);
         }
     }
-
-//    public RoomInfo getRoomInfoByID(int id) {
-//        try (Session session = sessionFactory.openSession()) {
-//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetRoomInfoByID");
-//            storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
-//            storedProcedure.registerStoredProcedureParameter("p_Number", Integer.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_Type", String.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_BedsNumber", Integer.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_RoomDescription", String.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_BuildingDescription", String.class, ParameterMode.OUT);
-//            storedProcedure.registerStoredProcedureParameter("p_RoomCount", Long.class, ParameterMode.OUT);
-//
-//            storedProcedure.setParameter("p_RoomID", id);
-//
-//            storedProcedure.execute();
-//
-//            return new RoomInfo( (int) storedProcedure.getOutputParameterValue("p_Number"),
-//                    (String) storedProcedure.getOutputParameterValue("p_Type"),
-//                    (int) storedProcedure.getOutputParameterValue("p_BedsNumber"),
-//                    (String) storedProcedure.getOutputParameterValue("p_RoomDescription"),
-//                    (String) storedProcedure.getOutputParameterValue("p_City"),
-//                    (String) storedProcedure.getOutputParameterValue("p_Street"),
-//                    (String) storedProcedure.getOutputParameterValue("p_BuildingDescription"),
-//                    (Long) storedProcedure.getOutputParameterValue("p_RoomCount"));
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error finding employee.", e);
-//        }
-//    }
     public List<RoomInfo> getRoomsInfo(int bNumber, String city, String type) {
         Byte filterType = 0b000;
         if (bNumber > 0){
@@ -217,14 +208,6 @@ public class DatabaseConnector{
             storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("p_Success", Boolean.class, ParameterMode.OUT);
 
-//            storedProcedure.setParameter("p_ClientName", newBooking.getClientName());
-//            storedProcedure.setParameter("p_ClientSurname", newBooking.getClientSurname());
-//            storedProcedure.setParameter("p_PhoneNumber", newBooking.getPhoneNumber());
-//            storedProcedure.setParameter("p_Email", newBooking.getEmail());
-//            storedProcedure.setParameter("p_StartDate", newBooking.getStartDate());
-//            storedProcedure.setParameter("p_EndDate", newBooking.getEndDate());
-//            storedProcedure.setParameter("p_RoomID", newBooking.getRoom().getId());
-
             storedProcedure.setParameter("p_ClientName", clientName);
             storedProcedure.setParameter("p_ClientSurname", clientSurname);
             storedProcedure.setParameter("p_PhoneNumber", phoneNumber);
@@ -233,10 +216,8 @@ public class DatabaseConnector{
             storedProcedure.setParameter("p_EndDate", endDate);
             storedProcedure.setParameter("p_RoomID", roomID);
 
-
-
             storedProcedure.execute();
-            //session.getTransaction().commit();
+            System.out.println(storedProcedure.getUpdateCount());
             return (Boolean) storedProcedure.getOutputParameterValue("p_Success");
 
         } catch (Exception e) {
@@ -244,9 +225,36 @@ public class DatabaseConnector{
         }
     }
 
-    public void saveDescriptionToDB(String description) {
+    public boolean deleteBooking (int iD) throws RuntimeException{
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("DeleteBooking");
+            storedProcedure.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+            storedProcedure.setParameter(0, iD);
+            storedProcedure.execute();
+            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
+
+        }catch (Exception e){
+            throw new RuntimeException("Error deleting booking.");
+        }
     }
 
+    public boolean updateBookingEmail (int bookingID, String newEmail) throws RuntimeException{
+        try (Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("UpdateBookingEmail");
+            storedProcedure.registerStoredProcedureParameter(0, Integer.class, ParameterMode.IN);
+            storedProcedure.registerStoredProcedureParameter(1, String.class, ParameterMode.IN);
+            storedProcedure.setParameter(0, bookingID);
+            storedProcedure.setParameter(1, newEmail);
+
+            storedProcedure.execute();
+            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
+
+        }catch (Exception e){
+            throw new RuntimeException("Error deleting booking.");
+        }
+    }
 
 //    protected void createEntityManager(){
 //        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("manager1");

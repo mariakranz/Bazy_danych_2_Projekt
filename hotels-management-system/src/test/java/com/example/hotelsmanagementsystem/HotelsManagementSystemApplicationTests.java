@@ -1,7 +1,6 @@
 package com.example.hotelsmanagementsystem;
 
 import com.example.hotelsmanagementsystem.models.*;
-import com.example.hotelsmanagementsystem.service.LoginService;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import org.hibernate.Session;
