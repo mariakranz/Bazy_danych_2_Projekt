@@ -40,9 +40,14 @@ END IF;
 END //
 
 
-
-
-
+DELIMITER //
+CREATE PROCEDURE GetEmployeePrivilege(
+	IN p_EmployeeID INT
+    )
+BEGIN
+    SELECT privilege FROM hotelsapp.employees
+    WHERE id = p_EmployeeID;
+END //
 
 
 DELIMITER //

@@ -20,6 +20,12 @@ public class Description implements Serializable {
 
     }
 
+    public Description(int id, String description){
+
+        this.id = id;
+        this.description = description;
+    }
+
     public Description(String description){
         this.description = description;
     }

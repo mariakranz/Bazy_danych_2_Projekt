@@ -9,12 +9,13 @@ import java.util.List;
 @Service
 public class DescriptionsService {
     private final DatabaseConnector db = DatabaseConnector.getInstance();
-    public List<Description> getAllDescriptions(){
-        return db.getDescriptions();
+
+    public List<Description> getDescriptions(int employeeID){
+        try{
+            return db.getDescriptions(employeeID);
+        }catch (RuntimeException exception){
+            throw new IllegalArgumentException(exception.getMessage());
+        }
     }
 
-    public void addDescriptionToDatabase(String description){
-        //Description newDescription = new Description(text);
-        db.saveDescriptionToDB(description);
-    }
 }

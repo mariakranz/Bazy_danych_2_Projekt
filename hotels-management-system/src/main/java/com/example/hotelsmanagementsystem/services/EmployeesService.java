@@ -10,14 +10,6 @@ import java.util.List;
 public class EmployeesService {
     private final DatabaseConnector db = DatabaseConnector.getInstance();
 
-    public List<String> getAllDepartmentsNames() {
-        return db.getDepartmentsNames();
-    }
-
-    public List getAllDepartments(){
-        return db.getDepartmentsInfo();
-    }
-
     public EmployeeInfo getEmployeeInfoByID(int id){
         return db.getEmployeeInfoByID(id);
     }

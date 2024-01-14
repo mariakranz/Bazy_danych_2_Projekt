@@ -78,7 +78,7 @@ Insert into `hotelsapp`.`employees` (Name, Surname, Phone, Email, Privilege, Dep
 Insert into `hotelsapp`.`employees` (Name, Surname, Phone, Email, Privilege, DepartmentID) values ('Quinn', 'Jones', '552345678', 'quinnjones@mail.com', 3, 2);
 Insert into `hotelsapp`.`employees` (Name, Surname, Phone, Email, Privilege, DepartmentID) values ('Rachel', 'Taylor', '555678901', 'racheltaylor@mail.com', 2, 5);
 
-# Insert into logindata
+# Insert into logindata -- nie do wywolywanie w kodzie
 DELIMITER //
 CREATE PROCEDURE `hotelsapp`.InsertLoginData()
 BEGIN
@@ -96,3 +96,5 @@ DELIMITER ;
 
 -- Wywołanie procedury
 CALL `hotelsapp`.InsertLoginData();
+DROP PROCEDURE IF EXISTS `hotelsapp`.InsertLoginData;
+
