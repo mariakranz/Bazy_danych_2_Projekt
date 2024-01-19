@@ -109,115 +109,115 @@ public final class DatabaseConnector{
             throw new RuntimeException("Error deleting booking.");
         }
     }
-    public boolean updateBookingEmail (int bookingID, String newEmail, int employeeID) throws RuntimeException{
-        try (Session session = sessionFactory.openSession()){
-            session.beginTransaction();
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("UpdateBookingEmailValidate");
-            storedProcedure.registerStoredProcedureParameter("p_BookingID", Integer.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_NewEmail", String.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
-            storedProcedure.setParameter("p_BookingID", bookingID);
-            storedProcedure.setParameter("p_NewEmail", newEmail);
-            storedProcedure.setParameter("p_EmployeeID", employeeID);
-
-            storedProcedure.execute();
-            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
-
-        }catch (Exception e){
-            throw new RuntimeException("Error deleting booking.");
-        }
-    }
+//    public boolean updateBookingEmail (int bookingID, String newEmail, int employeeID) throws RuntimeException{     // TODO: usunąć
+//        try (Session session = sessionFactory.openSession()){
+//            session.beginTransaction();
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("UpdateBookingEmailValidate");
+//            storedProcedure.registerStoredProcedureParameter("p_BookingID", Integer.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_NewEmail", String.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
+//            storedProcedure.setParameter("p_BookingID", bookingID);
+//            storedProcedure.setParameter("p_NewEmail", newEmail);
+//            storedProcedure.setParameter("p_EmployeeID", employeeID);
+//
+//            storedProcedure.execute();
+//            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
+//
+//        }catch (Exception e){
+//            throw new RuntimeException("Error deleting booking.");
+//        }
+//    }
 
     //buildings
-    public boolean insertBuilding(String city, String street, int descriptionID, int employeeID) throws RuntimeException{
-        try (Session session = sessionFactory.openSession()) {
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBuildingValidate");
-            storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_DescriptionID", String.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
-
-            storedProcedure.setParameter("p_City", city);
-            storedProcedure.setParameter("p_Street", street);
-            storedProcedure.setParameter("p_DescriptionID", descriptionID);
-            storedProcedure.setParameter("p_EmployeeID", employeeID);
-            storedProcedure.execute();
-            return storedProcedure.getUpdateCount() > 0;
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating building.", e);
-        }
-    }
+//    public boolean insertBuilding(String city, String street, int descriptionID, int employeeID) throws RuntimeException{       //TODO: USUNAC
+//        try (Session session = sessionFactory.openSession()) {
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBuildingValidate");
+//            storedProcedure.registerStoredProcedureParameter("p_City", String.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_Street", String.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_DescriptionID", String.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
+//
+//            storedProcedure.setParameter("p_City", city);
+//            storedProcedure.setParameter("p_Street", street);
+//            storedProcedure.setParameter("p_DescriptionID", descriptionID);
+//            storedProcedure.setParameter("p_EmployeeID", employeeID);
+//            storedProcedure.execute();
+//            return storedProcedure.getUpdateCount() > 0;
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error creating building.", e);
+//        }
+//    }
     //departments
 
     //descriptions
-    public List<Description> getDescriptions(int employeeID) throws RuntimeException{
-        List<Description> descriptions = new ArrayList<>();
-        try (Session session = sessionFactory.openSession()) {
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetDescriptionsValidatePrivilege");
-            storedProcedure.registerStoredProcedureParameter("employeeID", Integer.class, ParameterMode.IN);
-            storedProcedure.setParameter("employeeID", employeeID);
-            storedProcedure.execute();
-
-            List<Object[]> resultList = storedProcedure.getResultList();
-            for (Object[] result : resultList) {
-                Description description = new Description((int)result[0], (String) result[1]);
-                descriptions.add(description);
-            }
-
-            return descriptions;
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting rooms info.", e);
-        }
-    }
-    public boolean insertDescription(int employeeID, String description) throws RuntimeException{
-        try (Session session = sessionFactory.openSession()) {
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertDescriptionValidatePrivilege");
-            storedProcedure.registerStoredProcedureParameter("p_DescriptionText", String.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
-
-            storedProcedure.setParameter("p_DescriptionText", description);
-            storedProcedure.setParameter("p_EmployeeID", employeeID);
-            storedProcedure.execute();
-            return storedProcedure.getUpdateCount() > 0;
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating description.", e);
-        }
-    }
-    public boolean updateDescription (int buildingID, int descriptionID, int employeeID) throws RuntimeException{
-        try (Session session = sessionFactory.openSession()){
-            session.beginTransaction();
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("UpdateBookingEmailValidate");
-            storedProcedure.registerStoredProcedureParameter("p_BuildingID", Integer.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_NewDescriptionID", Integer.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
-            storedProcedure.setParameter("p_BuildingID", buildingID);
-            storedProcedure.setParameter("p_NewDescriptionID", descriptionID);
-            storedProcedure.setParameter("p_EmployeeID", employeeID);
-
-            storedProcedure.execute();
-            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
-
-        }catch (Exception e){
-            throw new RuntimeException("Error deleting booking.");
-        }
-    }
-    public boolean deleteDescription(int descriptionID, int employeeID) throws RuntimeException{
-        try (Session session = sessionFactory.openSession()){
-            session.beginTransaction();
-            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("DeleteDescriptionValidate");
-            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_DescriptionID", Integer.class, ParameterMode.IN);
-            storedProcedure.setParameter("p_EmployeeID", employeeID);
-            storedProcedure.setParameter("p_DescriptionID", descriptionID);
-            storedProcedure.execute();
-            System.out.println(storedProcedure.getUpdateCount());
-
-            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
-
-        }catch (Exception e){
-            throw new RuntimeException("Error deleting description.");
-        }
-    }
+//    public List<Description> getDescriptions(int employeeID) throws RuntimeException{
+//        List<Description> descriptions = new ArrayList<>();
+//        try (Session session = sessionFactory.openSession()) {
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetDescriptionsValidatePrivilege");
+//            storedProcedure.registerStoredProcedureParameter("employeeID", Integer.class, ParameterMode.IN);
+//            storedProcedure.setParameter("employeeID", employeeID);
+//            storedProcedure.execute();
+//
+//            List<Object[]> resultList = storedProcedure.getResultList();
+//            for (Object[] result : resultList) {
+//                Description description = new Description((int)result[0], (String) result[1]);
+//                descriptions.add(description);
+//            }
+//
+//            return descriptions;
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error getting rooms info.", e);
+//        }
+//    }
+//    public boolean insertDescription(int employeeID, String description) throws RuntimeException{
+//        try (Session session = sessionFactory.openSession()) {
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertDescriptionValidatePrivilege");
+//            storedProcedure.registerStoredProcedureParameter("p_DescriptionText", String.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
+//
+//            storedProcedure.setParameter("p_DescriptionText", description);
+//            storedProcedure.setParameter("p_EmployeeID", employeeID);
+//            storedProcedure.execute();
+//            return storedProcedure.getUpdateCount() > 0;
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error creating description.", e);
+//        }
+//    }
+//    public boolean updateDescription (int buildingID, int descriptionID, int employeeID) throws RuntimeException{
+//        try (Session session = sessionFactory.openSession()){
+//            session.beginTransaction();
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("UpdateBookingEmailValidate");
+//            storedProcedure.registerStoredProcedureParameter("p_BuildingID", Integer.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_NewDescriptionID", Integer.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
+//            storedProcedure.setParameter("p_BuildingID", buildingID);
+//            storedProcedure.setParameter("p_NewDescriptionID", descriptionID);
+//            storedProcedure.setParameter("p_EmployeeID", employeeID);
+//
+//            storedProcedure.execute();
+//            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
+//
+//        }catch (Exception e){
+//            throw new RuntimeException("Error deleting booking.");
+//        }
+//    }
+//    public boolean deleteDescription(int descriptionID, int employeeID) throws RuntimeException{
+//        try (Session session = sessionFactory.openSession()){
+//            session.beginTransaction();
+//            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("DeleteDescriptionValidate");
+//            storedProcedure.registerStoredProcedureParameter("p_EmployeeID", Integer.class, ParameterMode.IN);
+//            storedProcedure.registerStoredProcedureParameter("p_DescriptionID", Integer.class, ParameterMode.IN);
+//            storedProcedure.setParameter("p_EmployeeID", employeeID);
+//            storedProcedure.setParameter("p_DescriptionID", descriptionID);
+//            storedProcedure.execute();
+//            System.out.println(storedProcedure.getUpdateCount());
+//
+//            return storedProcedure.getUpdateCount() > 0;    //jesli zmienila sie liczba rekordow zwroc true
+//
+//        }catch (Exception e){
+//            throw new RuntimeException("Error deleting description.");
+//        }
+//    }
 
     //employees
     public EmployeeInfo getEmployeeInfoByID(int id) {

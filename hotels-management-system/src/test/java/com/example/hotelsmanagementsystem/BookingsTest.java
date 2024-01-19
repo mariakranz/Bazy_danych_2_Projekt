@@ -41,14 +41,14 @@ public class BookingsTest {
         assertEquals(TransactionStatus.FAILED_COMMIT, res);
     }
 
-    @Test
-    protected void updateEmail(){
-        int employeeID = 1;
-        TransactionStatus res = bookingService.updateBookingEmail(9, "sthUpdated@email.com", employeeID);
-        assertEquals(TransactionStatus.COMMITTED, res);
-        res = bookingService.updateBookingEmail(122, "sthUpdated@email.com", employeeID);
-        assertEquals(TransactionStatus.FAILED_COMMIT, res);
-    }
+//    @Test
+//    protected void updateEmail(){
+//        int employeeID = 1;
+//        TransactionStatus res = bookingService.updateBookingEmail(9, "sthUpdated@email.com", employeeID);
+//        assertEquals(TransactionStatus.COMMITTED, res);
+//        res = bookingService.updateBookingEmail(122, "sthUpdated@email.com", employeeID);
+//        assertEquals(TransactionStatus.FAILED_COMMIT, res);
+//    }
 
     private static java.sql.Date convertStringToSqlDate(String dateString) {
         try {
