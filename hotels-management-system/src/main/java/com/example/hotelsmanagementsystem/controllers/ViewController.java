@@ -2,23 +2,33 @@ package com.example.hotelsmanagementsystem.controllers;
 
 import com.example.hotelsmanagementsystem.models.EmployeeInfo;
 import com.example.hotelsmanagementsystem.models.RoomInfo;
+import com.example.hotelsmanagementsystem.services.BookingService;
 import com.example.hotelsmanagementsystem.services.EmployeesService;
 import com.example.hotelsmanagementsystem.services.FacilitiesService;
 import com.example.hotelsmanagementsystem.services.LoginService;
+import org.aspectj.lang.annotation.After;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class ViewController {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+
     Integer EmpId = -1;
     EmployeeInfo employee;
     ModelAndView mav;
     List<RoomInfo> roomsInfo;
+
+    int roomId;
 
     @GetMapping( "/")
     public ModelAndView getIndexPage() {
@@ -78,7 +88,9 @@ public class ViewController {
     }
     @GetMapping({"/roomInfo"})
     public ModelAndView roomInfo(@RequestParam String room) {
-        mav.addObject("room", roomsInfo.get(Integer.parseInt(room)));
+        RoomInfo roomInfo = roomsInfo.get(Integer.parseInt(room));
+        roomId = roomInfo.getRoomID();
+        mav.addObject("room", roomInfo);
         mav.addObject("showRoomDetails", true);
         return mav;
     }
@@ -104,4 +116,62 @@ public class ViewController {
 
         return mav;
     }
+    @GetMapping({"/bookRoom"})
+    public ModelAndView getBookingForm() {
+        mav.getModel().put("showBookingForm", true);
+        mav.getModel().put("showRoomDetails", false);
+        mav.addObject("bedLogin", false);
+        return mav;
+    }
+    @After("/bookRoom")
+    @PostMapping({"/bookedRoom"})
+    public ModelAndView bookedRoom(
+            @RequestParam String clientName,
+            @RequestParam String clientSurname,
+            @RequestParam String phoneNumber,
+            @RequestParam String email,
+            @RequestParam String startDate,
+            @RequestParam String endDate
+            ) {
+        System.out.println(startDate);
+        BookingService bookingService = new BookingService();
+        try{
+            Date sDate = dateFormat.parse(startDate);
+            Date eDate = dateFormat.parse(endDate);
+            bookingService.createBooking(clientName,clientSurname,phoneNumber,email,sDate,eDate, roomId);
+            mav.getModel().put("showBookingForm", false);
+            mav.addObject("showBookingAccept", true);
+            wait(1000);
+            mav.getModel().put("showBookingAccept", false);
+
+
+        } catch (Exception e) {
+            mav.addObject("ifBookingError", true);
+            mav.addObject("bookingError", e.getMessage());
+        }
+
+        return mav;
+    }
+    @GetMapping({"/closeBookingForm"})
+    public ModelAndView closeBooking() {
+
+        mav.getModel().put("showBookingForm", false);
+        return mav;
+    }
+
+    @GetMapping("/hideBookingAccept")
+    public ModelAndView hideBookingA() {
+
+        mav.getModel().put("showBookingAccept", false);
+        return mav;
+    }
+    @GetMapping( "/panel")
+    public ModelAndView getPanelPage() {
+        mav = new ModelAndView("panel");
+        mav.addObject("title", "Panel zarządzania");
+        mav.addObject("EmpId", EmpId);
+        mav.addObject("showLoginForm", false);
+        return mav;
+    }
+
 }

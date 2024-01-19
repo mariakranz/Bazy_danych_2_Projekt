@@ -42,8 +42,11 @@
                         <li class="nav-item" th:if="${EmpId > 0}">
                             <a class="nav-link" th:href="@{/profil}">Profil</a>
                         </li>
-                        <li class="nav-item" th:if="${EmpId > 0}">
-                            <a class="nav-link" href="index.html">Panel zarządzania</a>
+                        <li class="nav-item" th:if="${title != 'Panel zarządzania'} and ${EmpId > 0}" >
+                            <a class="nav-link" th:href="@{/panel}">Panel zarządzania</a>
+                        </li>
+                        <li class="nav-item active" th:if="${title == 'Panel zarządzania'} and ${EmpId > 0}">
+                            <a class="nav-link">Oferty</a>
                         </li>
                         <li class="nav-item ml-auto" th:if="${EmpId > 0}">
                             <a class="nav-link" th:href="@{/logoutEmp}">Wyloguj</a>
@@ -91,7 +94,49 @@
             <a th:href="@{/closeRoomDetails}" class="cancel-button">Zamknij</a>
         </div>
     </div>
+    <div th:if="${showBookingForm}" class="login-container" th:fragment="bookingForm">
+        <h2>Rezerwacja</h2>
+        <form class="login-form" action="#" method="post" th:action="@{/bookedRoom}">
+            <div class="form-group">
+                <label for="clientName">Imie:</label><br />
+                <input type="text" id="clientName" name="clientName" th:required="true">
+            </div>
+            <div class="form-group">
+                <label for="clientSurname">Nazwisko:</label><br />
+                <input type="text" id="clientSurname" name="clientSurname" th:required="true">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Numer telefonu:</label><br />
+                <input type="text" minlength="9" maxlength="9" pattern="[0-9]{9}" id="phoneNumber" name="phoneNumber" placeholder="764234987" th:required="true">
+            </div>
+            <div class="form-group">
+                <label for="email">Adres email:</label><br />
+                <input type="text" id="email" name="email" th:required="true">
+            </div>
+            <div class="form-group">
+                <label for="startDate">Data przyjazdu:</label><br />
+                <input type="date" id="startDate" name="startDate" th:required="true">
+            </div>
+            <div class="form-group">
+                <label for="endDate">Data wyjazdu:</label><br />
+                <input type="date" id="endDate" name="endDate" th:required="true">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zarezerwuj">
+                <a th:href="@{/closeBookingForm}" class="cancel-button">Anuluj</a>
+            </div>
+        </form>
+        <span th:if="${ifBookingError}" style="color: red"><strong th:text="${bookingError}"></strong></span>
 
+    </div>
+
+
+    <div th:if="${showBookingAccept}" class="login-container" th:fragment="bookingAccept">
+        <a class="bAccept" th:href="@{/hideBookingAccept}">
+        <h2>Rezerwacja</h2>
+        <span style="" th:text="'Pomyślnie zarezerwowano: ' +  ${room.getType()} + ' - ' + ${room.getCity()}"></span>
+        </a>
+    </div>
 
 </body>
 </html>

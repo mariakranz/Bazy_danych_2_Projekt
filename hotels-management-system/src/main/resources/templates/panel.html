@@ -1,0 +1,21 @@
+<!-- offers.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head th:replace="fragments/fragments :: head">
+
+    </head>
+    <body>
+        <div  th:replace="fragments/fragments :: fragmentsGroup"></div>
+        <section class="section ">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a th:href="@{/showBookingList}" class="book-button  ">Rezerwacje</a>
+                <a th:href="@{/showBookingList}" class="book-button  ">Pracownicy</a>
+                <a th:href="@{/showBookingList}" class="book-button  ">Pokoje</a>
+            </div>
+
+        </section>
+        <section class="section">
+
+        </section>
+    </body>
+</html>

@@ -7,6 +7,8 @@
 <body>
 <div  th:replace="fragments/fragments :: fragmentsGroup"></div>
 <div  th:replace="fragments/fragments :: roomDetails"></div>
+<div  th:replace="fragments/fragments :: bookingForm"></div>
+<div  th:replace="fragments/fragments :: bookingAccept"></div>
 <section class="section">
     <header><h3>Filtry</h3></header>
     <form th:action="@{/roomFilter}" method="post">
