@@ -172,6 +172,15 @@ DELIMITER ;
 
 
 #BOOKINGS
+#wyswietl
+DELIMITER //
+
+CREATE PROCEDURE GetBookings()
+BEGIN
+	SELECT * FROM hotelsapp.bookings;
+END //
+
+DELIMITER ;
 #modyfikuj rezerwacje (email)
 DELIMITER //
 
