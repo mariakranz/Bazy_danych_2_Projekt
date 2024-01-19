@@ -7,10 +7,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 public final class DatabaseConnector{
     private static DatabaseConnector instance;
@@ -36,6 +38,31 @@ public final class DatabaseConnector{
     }
 
     //bookings
+    public List<BookingRet> getBookings() throws RuntimeException{
+        List<BookingRet> bookings = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("GetBookings");
+            storedProcedure.execute();
+
+            List<Object[]> resultList = storedProcedure.getResultList();
+            for (Object[] result : resultList) {
+                BookingRet booking = new BookingRet(
+                        (int) result[0],
+                        (String) result[1],
+                        (String) result[2],
+                        (String) result[3],
+                        (String) result[4],
+                        (Date) result[5],
+                        (Date) result[6],
+                        (int) result[7]);
+                bookings.add(booking);
+            }
+
+            return bookings;
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting bookings info.", e);
+        }
+    }
     public boolean createNewBooking (String clientName, String clientSurname, String phoneNumber,
                                      String email, Date startDate, Date endDate, int roomID) throws RuntimeException{
         try (Session session = sessionFactory.openSession()) {
