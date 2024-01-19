@@ -1,5 +1,7 @@
 package com.example.hotelsmanagementsystem;
 
+import com.example.hotelsmanagementsystem.models.Booking;
+import com.example.hotelsmanagementsystem.repository.BookingRet;
 import com.example.hotelsmanagementsystem.services.BookingService;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,5 +64,11 @@ public class BookingsTest {
             e.printStackTrace(); // Obsługa błędów parsowania
             return null;
         }
+    }
+
+    @Test
+    protected void getBookingsTest(){
+        List<BookingRet> res = bookingService.getAllBookings();
+        res.forEach(System.out::println);
     }
 }

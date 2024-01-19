@@ -1,11 +1,16 @@
 package com.example.hotelsmanagementsystem.services;
 
+import com.example.hotelsmanagementsystem.models.Booking;
+import com.example.hotelsmanagementsystem.repository.BookingRet;
 import com.example.hotelsmanagementsystem.repository.DatabaseConnector;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
+@Service
 public class BookingService {
     private final DatabaseConnector db = DatabaseConnector.getInstance();
 
@@ -46,6 +51,14 @@ public class BookingService {
             //else throw new IndexOutOfBoundsException("Booking id not found.");
         }catch (RuntimeException ignored){};
         return TransactionStatus.FAILED_COMMIT;
+    }
+
+    public List<BookingRet> getAllBookings() throws IllegalArgumentException{
+        try{
+            return db.getBookings();
+        }catch (RuntimeException exception){
+            throw new IllegalArgumentException(exception.getMessage());
+        }
     }
 
 //    public Map<TransactionStatus, String> updateBookingEmailV3(int bookingID, String email) throws IndexOutOfBoundsException{
