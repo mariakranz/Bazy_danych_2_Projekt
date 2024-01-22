@@ -1,7 +1,6 @@
 package com.example.hotelsmanagementsystem;
 
-import com.example.hotelsmanagementsystem.models.Booking;
-import com.example.hotelsmanagementsystem.repository.BookingRet;
+import com.example.hotelsmanagementsystem.models.BookingRet;
 import com.example.hotelsmanagementsystem.services.BookingService;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.junit.jupiter.api.Test;

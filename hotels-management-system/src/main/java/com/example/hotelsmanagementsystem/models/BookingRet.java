@@ -1,4 +1,4 @@
-package com.example.hotelsmanagementsystem.repository;
+package com.example.hotelsmanagementsystem.models;
 
 import com.example.hotelsmanagementsystem.models.Room;
 

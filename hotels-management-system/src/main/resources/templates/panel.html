@@ -11,11 +11,32 @@
                 <a th:href="@{/showBookingList}" class="book-button  ">Rezerwacje</a>
                 <a th:href="@{/showBookingList}" class="book-button  ">Pracownicy</a>
                 <a th:href="@{/showBookingList}" class="book-button  ">Pokoje</a>
+                <a th:href="@{/showBookingList}" class="book-button  ">Budynki</a>
             </div>
 
         </section>
-        <section class="section">
+        <section class="section" th:if="bookingList">
+            <header style="text-align: center">
+                <h2>Rezerwacje</h2>
+            </header>
+            <article th:each="booking : ${bookings}" >
 
+                <header th:if="${bookingStat.index == 0}">
+                    <h2 th:text="${booking.getStartDate()} + ' - ' + ${booking.getEndDate()}"></h2>
+                </header>
+                <header th:if="${bookingStat.index > 0}" style="border-top: #333333 solid 2px">
+                    <h2 th:text="${booking.getStartDate()} + ' - ' + ${booking.getEndDate()}"></h2>
+                </header>
+                <section>
+                    <p>
+                        <b>Pokój: </b> <span th:text="${booking.getRoomID()}"></span><br />
+                        <b>Klient: </b> <span th:text="${booking.getClientName()} + ' ' + ${booking.getClientSurname()}"></span><br />
+                        <b>Numer telefonu: </b> <span th:text="${booking.getPhoneNumber()}"></span> <br />
+                        <b>E-mail: </b> <span th:text="${booking.getEmail()}"></span>
+                    </p>
+                </section>
+                <a th:href="@{/deleteBooking(bookingId=${booking.getId()})}" class="book-button" style="padding: 5px; margin-bottom: 10px;">Usuń</a>
+            </article>
         </section>
     </body>
 </html>

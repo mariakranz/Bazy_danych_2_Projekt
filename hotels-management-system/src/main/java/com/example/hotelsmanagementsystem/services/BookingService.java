@@ -1,7 +1,6 @@
 package com.example.hotelsmanagementsystem.services;
 
-import com.example.hotelsmanagementsystem.models.Booking;
-import com.example.hotelsmanagementsystem.repository.BookingRet;
+import com.example.hotelsmanagementsystem.models.BookingRet;
 import com.example.hotelsmanagementsystem.repository.DatabaseConnector;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.stereotype.Service;

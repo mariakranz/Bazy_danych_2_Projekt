@@ -2,6 +2,7 @@ package com.example.hotelsmanagementsystem.controllers;
 
 import com.example.hotelsmanagementsystem.models.EmployeeInfo;
 import com.example.hotelsmanagementsystem.models.RoomInfo;
+import com.example.hotelsmanagementsystem.models.BookingRet;
 import com.example.hotelsmanagementsystem.services.BookingService;
 import com.example.hotelsmanagementsystem.services.EmployeesService;
 import com.example.hotelsmanagementsystem.services.FacilitiesService;
@@ -13,11 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ViewController {
@@ -171,7 +171,27 @@ public class ViewController {
         mav.addObject("title", "Panel zarządzania");
         mav.addObject("EmpId", EmpId);
         mav.addObject("showLoginForm", false);
+        mav.addObject("bookings", getBookings());
+        return mav;
+    }
+    @GetMapping( "/deleteBooking")
+    public ModelAndView deleteBooking(@RequestParam String bookingId) {
+        BookingService bookingService = new BookingService();
+        bookingService.deleteBooking(Integer.parseInt(bookingId), EmpId);
+        mav = new ModelAndView("panel");
+        mav.addObject("title", "Panel zarządzania");
+        mav.addObject("EmpId", EmpId);
+        mav.addObject("showLoginForm", false);
+        mav.addObject("bookings", getBookings());
         return mav;
     }
 
+    private List<BookingRet> getBookings(){
+        BookingService bookingService = new BookingService();
+        List<BookingRet> sortedBookings = bookingService.getAllBookings()
+                .stream()
+                .sorted((booking1, booking2) -> booking2.getStartDate().compareTo(booking1.getStartDate()))
+                .collect(Collectors.toList());
+        return sortedBookings;
+    }
 }
