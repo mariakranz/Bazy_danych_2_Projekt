@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Controller
 public class ViewController {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     Integer EmpId = -1;
     EmployeeInfo employee;
@@ -101,11 +101,13 @@ public class ViewController {
     }
     @GetMapping({"/profil"})
     public ModelAndView getProfilPage() {
-        mav = new ModelAndView("profil");
-        mav.addObject("title", "Profil");
-        mav.addObject("EmpId", EmpId);
-        mav.addObject("showLoginForm", false);
-        mav.addObject("employee", employee);
+        if(EmpId != -1) {
+            mav = new ModelAndView("profil");
+            mav.addObject("title", "Profil");
+            mav.addObject("EmpId", EmpId);
+            mav.addObject("showLoginForm", false);
+            mav.addObject("employee", employee);
+        }
         return mav;
     }
     @PostMapping({"/roomFilter"})
@@ -167,22 +169,26 @@ public class ViewController {
     }
     @GetMapping( "/panel")
     public ModelAndView getPanelPage() {
-        mav = new ModelAndView("panel");
-        mav.addObject("title", "Panel zarządzania");
-        mav.addObject("EmpId", EmpId);
-        mav.addObject("showLoginForm", false);
-        mav.addObject("bookings", getBookings());
+        if(EmpId != -1) {
+            mav = new ModelAndView("panel");
+            mav.addObject("title", "Panel zarządzania");
+            mav.addObject("EmpId", EmpId);
+            mav.addObject("showLoginForm", false);
+            mav.addObject("bookings", getBookings());
+        }
         return mav;
     }
     @GetMapping( "/deleteBooking")
     public ModelAndView deleteBooking(@RequestParam String bookingId) {
-        BookingService bookingService = new BookingService();
-        bookingService.deleteBooking(Integer.parseInt(bookingId), EmpId);
-        mav = new ModelAndView("panel");
-        mav.addObject("title", "Panel zarządzania");
-        mav.addObject("EmpId", EmpId);
-        mav.addObject("showLoginForm", false);
-        mav.addObject("bookings", getBookings());
+        if(EmpId != -1) {
+            BookingService bookingService = new BookingService();
+            bookingService.deleteBooking(Integer.parseInt(bookingId), EmpId);
+            mav = new ModelAndView("panel");
+            mav.addObject("title", "Panel zarządzania");
+            mav.addObject("EmpId", EmpId);
+            mav.addObject("showLoginForm", false);
+            mav.addObject("bookings", getBookings());
+        }
         return mav;
     }
 
