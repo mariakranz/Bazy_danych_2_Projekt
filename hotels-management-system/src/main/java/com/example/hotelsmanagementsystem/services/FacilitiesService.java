@@ -9,11 +9,7 @@ import java.util.List;
 @Service
 public class FacilitiesService {
     private final DatabaseConnector db = DatabaseConnector.getInstance();
-
-//    public RoomInfo getRoomInfoById(int id){
-//        return db.getRoomInfoByID(id);
-//    }
-    public List<RoomInfo> getRoomInfo(int bNumber, String city, String type){
+    public List<RoomInfo> getRoomInfo(int bNumber, String city, String type) throws RuntimeException{
         return db.getRoomsInfo(bNumber, city, type);
     }
 }

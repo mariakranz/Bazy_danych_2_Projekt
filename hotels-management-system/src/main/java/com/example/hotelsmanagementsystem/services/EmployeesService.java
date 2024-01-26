@@ -10,7 +10,7 @@ import java.util.List;
 public class EmployeesService {
     private final DatabaseConnector db = DatabaseConnector.getInstance();
 
-    public EmployeeInfo getEmployeeInfoByID(int id){
+    public EmployeeInfo getEmployeeInfoByID(int id) throws RuntimeException{
         return db.getEmployeeInfoByID(id);
     }
 }

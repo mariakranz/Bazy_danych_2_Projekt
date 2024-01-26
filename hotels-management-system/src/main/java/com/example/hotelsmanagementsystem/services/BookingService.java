@@ -15,7 +15,7 @@ public class BookingService {
 
 
     public boolean createBooking(String clientName, String clientSurname, String phoneNumber,
-                                 String email, Date startDate, Date endDate, int roomID) throws  IllegalArgumentException, RuntimeException{
+                                 String email, Date startDate, Date endDate, int roomID) throws  IllegalArgumentException{
 
         if (endDate.before(startDate)) throw new IllegalArgumentException("Błąd rezerwacji - Data końca rezerwacji nie może być przed datą początku.");
 
@@ -39,16 +39,6 @@ public class BookingService {
         }catch (RuntimeException ignored){}
         return TransactionStatus.FAILED_COMMIT;
     }
-
-//    public TransactionStatus updateBookingEmail(int bookingID, String email, int employeeID){
-//        try {
-//            boolean success = db.updateBookingEmail(bookingID, email, employeeID);
-//            if(success) return TransactionStatus.COMMITTED;
-//
-//            //else throw new IndexOutOfBoundsException("Booking id not found.");
-//        }catch (RuntimeException ignored){};
-//        return TransactionStatus.FAILED_COMMIT;
-//    }
 
     public List<BookingRet> getAllBookings() throws IllegalArgumentException{
         try{
