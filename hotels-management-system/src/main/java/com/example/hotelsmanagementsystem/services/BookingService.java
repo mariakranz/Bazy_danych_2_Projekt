@@ -14,7 +14,7 @@ public class BookingService {
     private final DatabaseConnector db = DatabaseConnector.getInstance();
 
 
-    public boolean createBooking(String clientName, String clientSurname, String phoneNumber,
+    public int createBooking(String clientName, String clientSurname, String phoneNumber,
                                  String email, Date startDate, Date endDate, int roomID) throws  IllegalArgumentException{
 
         if (endDate.before(startDate)) throw new IllegalArgumentException("Błąd rezerwacji - Data końca rezerwacji nie może być przed datą początku.");
@@ -23,9 +23,12 @@ public class BookingService {
         if (startDate.before(java.sql.Date.valueOf(localDate))) throw new IllegalArgumentException("Błąd rezerwacji - Data początkowa nie może być przed " + localDate + ".");
 
         if(!email.contains("@"))throw new IllegalArgumentException("Błąd rezerwacji - podano błędny adres e-mail.");
-        try {
-            return db.createNewBooking(clientName, clientSurname, phoneNumber, email, startDate, endDate, roomID);
 
+        int createdReservationId;
+        try {
+            createdReservationId = db.createNewBooking(clientName, clientSurname, phoneNumber, email, startDate, endDate, roomID);
+            if (createdReservationId == -1) throw new IllegalArgumentException("Room already reserved.");
+            else return createdReservationId;
         }catch (RuntimeException exception){
             throw new IllegalArgumentException(exception.getMessage());
         }

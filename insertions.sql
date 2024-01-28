@@ -45,7 +45,6 @@ Insert into `hotelsapp`.`bookings` (ClientName, ClientSurname, PhoneNumber, Emai
 Insert into `hotelsapp`.`bookings` (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID) values ('Piotr', 'Wójcik', '654321987', 'piotr.wojcik@email.com', '2023-03-20', '2023-03-25', 15);
 Insert into `hotelsapp`.`bookings` (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID) values ('Karolina', 'Dąbrowska', '123789456', 'karolina.dabrowska@email.com', '2023-04-15', '2023-04-20', 2);
 Insert into `hotelsapp`.`bookings` (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID) values ('Mateusz', 'Kowalczyk', '789456123', 'mateusz.kowalczyk@email.com', '2023-05-05', '2023-05-10', 1);
-Insert into `hotelsapp`.`bookings` (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID) values ('Kacper', 'Kowalczyk', '789456123', 'kacper.kowalczyk@email.com', '2024-03-20', '2024-03-25', 15);
 
 # Insert into departments (two departments already)
 Insert into `hotelsapp`.`departments` (Name, ManagerID) values ('Client_service', 1);

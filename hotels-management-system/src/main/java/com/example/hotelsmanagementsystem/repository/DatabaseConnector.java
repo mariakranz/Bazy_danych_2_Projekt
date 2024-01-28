@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,8 +61,8 @@ public final class DatabaseConnector{
             throw new RuntimeException("Error getting bookings info.", e);
         }
     }
-    public boolean createNewBooking (String clientName, String clientSurname, String phoneNumber,
-                                     String email, Date startDate, Date endDate, int roomID) throws RuntimeException{
+    public int createNewBooking(String clientName, String clientSurname, String phoneNumber,
+                                String email, Date startDate, Date endDate, int roomID) throws RuntimeException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             StoredProcedureQuery storedProcedure = session.createStoredProcedureQuery("InsertBooking");
@@ -74,7 +73,7 @@ public final class DatabaseConnector{
             storedProcedure.registerStoredProcedureParameter("p_StartDate", Date.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("p_EndDate", Date.class, ParameterMode.IN);
             storedProcedure.registerStoredProcedureParameter("p_RoomID", Integer.class, ParameterMode.IN);
-            storedProcedure.registerStoredProcedureParameter("p_Success", Boolean.class, ParameterMode.OUT);
+            storedProcedure.registerStoredProcedureParameter("p_BookingID", Integer.class, ParameterMode.OUT);
 
             storedProcedure.setParameter("p_ClientName", clientName);
             storedProcedure.setParameter("p_ClientSurname", clientSurname);
@@ -85,12 +84,13 @@ public final class DatabaseConnector{
             storedProcedure.setParameter("p_RoomID", roomID);
 
             storedProcedure.execute();
-            return (Boolean) storedProcedure.getOutputParameterValue("p_Success");
+            return (Integer) storedProcedure.getOutputParameterValue("p_BookingID");
 
         } catch (Exception e) {
             throw new RuntimeException("Error creating booking.", e);
         }
     }
+
     public boolean deleteBooking (int bookingID, int employeeID) throws RuntimeException{
         try (Session session = sessionFactory.openSession()){
             session.beginTransaction();

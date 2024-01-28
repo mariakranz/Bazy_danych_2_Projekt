@@ -8,10 +8,12 @@ BEGIN
 END //
 
 DELIMITER ;
-#modyfikuj rezerwacje (email)
+
+
+
 DELIMITER //
 
-#Rezerwacja pokoju
+-- Rezerwacja pokoju
 CREATE PROCEDURE InsertBooking(
     IN p_ClientName VARCHAR(255),
     IN p_ClientSurname VARCHAR(255),
@@ -20,11 +22,11 @@ CREATE PROCEDURE InsertBooking(
     IN p_StartDate DATE,
     IN p_EndDate DATE,
     IN p_RoomID INT,
-    OUT p_Success BOOLEAN
+    OUT p_BookingID INT
 )
 BEGIN
     DECLARE conflict_count INT;
-
+    
     -- Sprawdzenie, czy istnieje już rezerwacja na dany pokój w podanym czasie
     SELECT COUNT(*) INTO conflict_count
     FROM bookings
@@ -34,19 +36,20 @@ BEGIN
     OR (StartDate <= p_StartDate AND EndDate >= p_EndDate));
 
     IF conflict_count > 0 THEN
-        -- Jeśli istnieje konflikt, ustaw p_Success na false
-        SET p_Success = FALSE;
+        -- Jeśli istnieje konflikt, ustaw p_BookingID na -1
+        SET p_BookingID = -1; -- Ustawiamy na -1, aby oznaczyć, że nie udało się dokonać rezerwacji
     ELSE
         -- Wstawienie rezerwacji do bazy danych
         INSERT INTO bookings (ClientName, ClientSurname, PhoneNumber, Email, StartDate, EndDate, RoomID)
         VALUES (p_ClientName, p_ClientSurname, p_PhoneNumber, p_Email, p_StartDate, p_EndDate, p_RoomID);
 
-        -- Jeśli nie ma konfliktu, ustaw p_Success na true
-        SET p_Success = TRUE;
+        -- Pobranie ID nowo dodanej rezerwacji
+        SELECT LAST_INSERT_ID() INTO p_BookingID;
     END IF;
 END //
 
 DELIMITER ;
+
 
 #Usuń rezerwacje
 DELIMITER //
@@ -183,49 +186,3 @@ END //
 
 DELIMITER ;
 
-#Dodaj pokój
-DELIMITER //
-CREATE PROCEDURE InsertRoomValidate(
-    IN p_RoomNumber INT,
-    IN p_RoomType VARCHAR(255),
-    IN p_BedsNumber INT,
-    IN p_BuildingID INT,
-    IN p_DescriptionID INT,
-    IN p_EmployeeID INT
-)
-BEGIN
-    DECLARE employeePrivilege INT;
-
-    -- Sprawdzenie uprawnień pracownika
-    SELECT privilege INTO employeePrivilege FROM hotelsapp.employees WHERE id = p_EmployeeID;
-
-    -- Wykonanie INSERT tylko jeśli employee ma privilege >= 3
-    IF employeePrivilege >= 3 THEN
-        INSERT INTO rooms (Number, Type, BedsNumber, BuildingID, DescriptionID)
-        VALUES (p_RoomNumber, p_RoomType, p_BedsNumber, p_BuildingID, p_DescriptionID);
-    END IF;
-END //
-
-DELIMITER ;
-
-#Usuń pokój
-DELIMITER //
-
-CREATE PROCEDURE DeleteRoomValidate(
-    IN p_RoomID INT,
-    IN p_EmployeeID INT
-)
-BEGIN
-    DECLARE employeePrivilege INT;
-
-    -- Sprawdzenie uprawnień pracownika
-    SELECT privilege INTO employeePrivilege FROM hotelsapp.employees WHERE id = p_EmployeeID;
-
-    -- Wykonanie DELETE tylko jeśli employee ma privilege >= 3
-    IF employeePrivilege >= 3 THEN
-        DELETE FROM rooms
-        WHERE id = p_RoomID;
-    END IF;
-END //
-
-DELIMITER ;
